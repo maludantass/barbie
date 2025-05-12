@@ -2,14 +2,12 @@
 #include <string.h>
 #include <stdio.h>
 #include "pistas.h"
-#include "raylib.h"
 
 // Função para adicionar uma nova pista à lista
 void adicionarPista(Pista** lista, const char* descricao, int relevancia) {
     Pista* nova = (Pista*)malloc(sizeof(Pista));  // Aloca memória para a nova pista
-
     if (nova == NULL) {  // Verifica se a alocação de memória foi bem-sucedida
-        fprintf(stderr, "Erro: Falha ao alocar memória para nova pista.\n");
+       
         return;
     }
 
@@ -22,22 +20,15 @@ void adicionarPista(Pista** lista, const char* descricao, int relevancia) {
     *lista = nova;  // Atualiza o ponteiro para a lista
 }
 
-// Função para mostrar as pistas (para depuração no console)
+// Função para mostrar as pistas
 void mostrarPistas(Pista* lista) {
     Pista* temp = lista;
-
-    if (lista == NULL) {
-        printf("Nenhuma pista coletada ainda.\n");
-        return;
-    }
-
-    printf("--- Pistas Coletadas ---\n");
     while (temp != NULL) {
         printf("Pista: %s (Relevância: %d)\n", temp->descricao, temp->relevancia);
         temp = temp->prox;
     }
-    printf("--- Fim das Pistas ---\n");
 }
+<<<<<<< HEAD
 
 // Função para mostrar as pistas usando Raylib (para a interface do jogo)
 void mostrarPistasRaylib(Pista* lista) {
@@ -166,3 +157,5 @@ void liberarPistas(Pista* lista) {
         free(temp);  // Libera a memória do nó atual
     }
 }
+=======
+>>>>>>> parent of 89c0a73 (add funções de pistas)

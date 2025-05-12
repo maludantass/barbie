@@ -10,12 +10,13 @@ typedef struct Pista {
 // Função para adicionar uma nova pista na lista
 void adicionarPista(Pista** lista, const char* descricao, int relevancia);
 
-// Função para exibir todas as pistas (para depuração no console)
+// Função para exibir todas as pistas
 void mostrarPistas(Pista* lista);
 
-// Função para exibir todas as pistas usando Raylib (para a interface do jogo)
-void mostrarPistasRaylib(Pista* lista);
+// Função para ordenar as pistas por relevância ou nome, conforme necessário
+void ordenarPistas(Pista** lista);
 
+<<<<<<< HEAD
 // Função para ordenar as pistas por nome do personagem
 void ordenarPistasPorPersonagem(Pista** lista);
 
@@ -35,3 +36,6 @@ void contarPistasPorPersonagem(Pista* lista);
 void liberarPistas(Pista* lista)
 
 #endif
+=======
+#endif
+>>>>>>> parent of 89c0a73 (add funções de pistas)
