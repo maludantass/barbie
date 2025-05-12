@@ -1,3 +1,4 @@
+#include "raylib.h"
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
@@ -28,7 +29,6 @@ void mostrarPistas(Pista* lista) {
         temp = temp->prox;
     }
 }
-<<<<<<< HEAD
 
 // Função para mostrar as pistas usando Raylib (para a interface do jogo)
 void mostrarPistasRaylib(Pista* lista) {
@@ -157,5 +157,3 @@ void liberarPistas(Pista* lista) {
         free(temp);  // Libera a memória do nó atual
     }
 }
-=======
->>>>>>> parent of 89c0a73 (add funções de pistas)
