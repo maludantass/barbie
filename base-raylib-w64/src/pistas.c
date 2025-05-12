@@ -110,3 +110,18 @@ void imprimirLista(Pista* lista) {
     }
     printf("NULL\n");
 }
+
+Pista* filtrarPistasPorPersonagem(Pista* lista, const char* personagem) {
+    Pista* filtrada = NULL;
+
+    while (lista != NULL) {
+        printf("Checando pista: %s\n", lista->descricao);//funciona para debug
+        if (strstr(lista->descricao, personagem) != NULL) {
+            printf(">>> Achou personagem: %s\n", personagem); //para debug
+            adicionarPista(&filtrada, lista->descricao, lista->relevancia);
+        }
+        lista = lista->prox;
+    }
+
+    return filtrada;
+}

@@ -25,4 +25,7 @@ void inserirOrdenado(Pista** ordenado, Pista* novaPista);
 // Função para imprimir a lista (útil para debug)
 void imprimirLista(Pista* lista);
 
+//filtar por personagem
+Pista* filtrarPistasPorPersonagem(Pista* lista, const char* personagem);
+
 #endif
