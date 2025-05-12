@@ -110,6 +110,7 @@ void imprimirLista(Pista* lista) {
     printf("NULL\n");
 }
 
+//filtrar por personagem-->FUNCIONOU
 Pista* filtrarPistasPorPersonagem(Pista* lista, const char* personagem) {
     Pista* filtrada = NULL;
 
@@ -123,4 +124,35 @@ Pista* filtrarPistasPorPersonagem(Pista* lista, const char* personagem) {
     }
 
     return filtrada;
+}
+
+//contar qnts pistas cada personagem teve-->AINDA EM TESTE
+void contarPistasPorPersonagem(Pista* lista) {
+    if (lista == NULL) {
+        printf("Nenhuma pista para contar.\n");
+        return;
+    }
+
+    const char* personagens[] = {"Ken", "Ryan"};
+    int numPersonagens = sizeof(personagens) / sizeof(personagens[0]);
+    int contadores[numPersonagens];
+    
+    for (int i = 0; i < numPersonagens; i++) {
+        contadores[i] = 0;
+    }
+
+    Pista* temp = lista;
+    while (temp != NULL) {
+        for (int i = 0; i < numPersonagens; i++) {
+            if (strstr(temp->descricao, personagens[i]) != NULL) {
+                contadores[i]++;
+            }
+        }
+        temp = temp->prox;
+    }
+
+    printf("=== Contagem de Pistas por Personagem ===\n");
+    for (int i = 0; i < numPersonagens; i++) {
+        printf("%s: %d pistas\n", personagens[i], contadores[i]);
+    }
 }

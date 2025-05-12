@@ -28,4 +28,7 @@ void imprimirLista(Pista* lista);
 //filtar por personagem
 Pista* filtrarPistasPorPersonagem(Pista* lista, const char* personagem);
 
+//funcao de qnts pistas cada personagem tem
+void contarPistasPorPersonagem(Pista* lista);
+
 #endif
