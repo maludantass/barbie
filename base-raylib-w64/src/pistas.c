@@ -41,8 +41,6 @@ void mostrarPistas(Pista* lista) {
 
 // Função para mostrar as pistas usando Raylib (para a interface do jogo)
 void mostrarPistasRaylib(Pista* lista) {
-    const int screenWidth = 800;
-    const int screenHeight = 600;
     int yOffset = 50;
     int lineHeight = 20;
     int padding = 10;
@@ -69,6 +67,7 @@ void mostrarPistasRaylib(Pista* lista) {
 
     EndDrawing();
 }
+
 
 // Função para ordenar as pistas por nome do personagem (Insertion Sort)
 void ordenarPistasPorPersonagem(Pista** lista) {
