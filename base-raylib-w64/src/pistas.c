@@ -156,3 +156,13 @@ void contarPistasPorPersonagem(Pista* lista) {
         printf("%s: %d pistas\n", personagens[i], contadores[i]);
     }
 }
+
+//funcao de liberar pista-->BASICA, EM TESTE
+void liberarPistas(Pista* lista) {
+    Pista* atual = lista;
+    while (atual != NULL) {
+        Pista* temp = atual;
+        atual = atual->prox;
+        free(temp);  // Libera a memória do nó atual
+    }
+}
