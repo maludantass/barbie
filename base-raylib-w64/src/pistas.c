@@ -1,14 +1,15 @@
-#include "raylib.h"
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
 #include "pistas.h"
+#include "raylib.h"
 
 // Função para adicionar uma nova pista à lista
 void adicionarPista(Pista** lista, const char* descricao, int relevancia) {
     Pista* nova = (Pista*)malloc(sizeof(Pista));  // Aloca memória para a nova pista
+
     if (nova == NULL) {  // Verifica se a alocação de memória foi bem-sucedida
-       
+        fprintf(stderr, "Erro: Falha ao alocar memória para nova pista.\n");
         return;
     }
 
@@ -21,13 +22,21 @@ void adicionarPista(Pista** lista, const char* descricao, int relevancia) {
     *lista = nova;  // Atualiza o ponteiro para a lista
 }
 
-// Função para mostrar as pistas
+// Função para mostrar as pistas (para depuração no console)
 void mostrarPistas(Pista* lista) {
     Pista* temp = lista;
+
+    if (lista == NULL) {
+        printf("Nenhuma pista coletada ainda.\n");
+        return;
+    }
+
+    printf("--- Pistas Coletadas ---\n");
     while (temp != NULL) {
         printf("Pista: %s (Relevância: %d)\n", temp->descricao, temp->relevancia);
         temp = temp->prox;
     }
+    printf("--- Fim das Pistas ---\n");
 }
 
 // Função para mostrar as pistas usando Raylib (para a interface do jogo)
@@ -117,6 +126,8 @@ Pista* filtrarPistasPorPersonagem(Pista* lista, const char* personagem) {
     return filtrada;
 }
 
+#define NUM_PERSONAGENS 2 //mudar dps para a qntd q a gnt vai colocar 
+
 //contar qnts pistas cada personagem teve-->AINDA EM TESTE
 void contarPistasPorPersonagem(Pista* lista) {
     if (lista == NULL) {
@@ -124,17 +135,16 @@ void contarPistasPorPersonagem(Pista* lista) {
         return;
     }
 
-    const char* personagens[] = {"Ken", "Ryan"};
-    int numPersonagens = sizeof(personagens) / sizeof(personagens[0]);
-    int contadores[numPersonagens];
+    const char* personagens[NUM_PERSONAGENS] = {"Ken", "Ryan"};
+    int contadores[NUM_PERSONAGENS];
     
-    for (int i = 0; i < numPersonagens; i++) {
+    for (int i = 0; i < NUM_PERSONAGENS; i++) {
         contadores[i] = 0;
     }
 
     Pista* temp = lista;
     while (temp != NULL) {
-        for (int i = 0; i < numPersonagens; i++) {
+        for (int i = 0; i < NUM_PERSONAGENS; i++) {
             if (strstr(temp->descricao, personagens[i]) != NULL) {
                 contadores[i]++;
             }
@@ -143,7 +153,7 @@ void contarPistasPorPersonagem(Pista* lista) {
     }
 
     printf("=== Contagem de Pistas por Personagem ===\n");
-    for (int i = 0; i < numPersonagens; i++) {
+    for (int i = 0; i < NUM_PERSONAGENS; i++) {
         printf("%s: %d pistas\n", personagens[i], contadores[i]);
     }
 }
