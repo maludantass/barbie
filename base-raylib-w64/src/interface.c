@@ -1,9 +1,13 @@
 #include "interface.h"
 #include "raylib.h"
+#include "ia.h"
+#include "pistas.h"
 #include <string.h>
 
 #define SCREEN_WIDTH 1800
 #define SCREEN_HEIGHT 950
+
+void mostrarMenuPrincipal();
 
 void mostrarIntroducao() {
     InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Quem é o Crush Secreto da Barbie?");
@@ -57,12 +61,12 @@ void mostrarIntroducao() {
                 UpdateMusicStream(menuMusica);
                 if (fadingInMenu && fade < 1.0f) {
                     fade += 0.01f;
-                    SetMusicVolume(menuMusica, 0.3f * fade); // volume mais baixo no máximo
+                    SetMusicVolume(menuMusica, 0.3f * fade);
                 }
             }
 
             if (fadingOutIntro && fade < 1.0f) {
-                fade += 0.005f; // fade out mais lento da intro
+                fade += 0.005f;
                 SetMusicVolume(introMusica, 1.0f - fade);
                 if (fade >= 1.0f) StopMusicStream(introMusica);
             }
@@ -116,7 +120,9 @@ void mostrarIntroducao() {
 
             DrawText("Pressione ESPAÇO para pular", 20, 900, 20, DARKGRAY);
             if (IsKeyPressed(KEY_SPACE)) {
-                pulouIntro = true;
+                CloseWindow();
+                mostrarMenuPrincipal();
+                break;
             }
         } else {
             ClearBackground((Color){255, 182, 193, 255});
@@ -126,6 +132,8 @@ void mostrarIntroducao() {
             DrawText("Pressione ESPAÇO para Começar", 600, 500, 28, DARKGRAY);
 
             if (IsKeyPressed(KEY_SPACE)) {
+                CloseWindow();
+                mostrarMenuPrincipal();
                 break;
             }
         }
@@ -139,5 +147,44 @@ void mostrarIntroducao() {
     UnloadMusicStream(introMusica);
     UnloadMusicStream(menuMusica);
     CloseAudioDevice();
+    CloseWindow();
+}
+
+void mostrarMenuPrincipal() {
+    Pista* listaDePistas = NULL;
+
+    InitWindow(800, 600, "Barbie's Love Detective - Menu");
+    SetTargetFPS(60);
+
+    while (!WindowShouldClose()) {
+        BeginDrawing();
+        ClearBackground((Color){255, 228, 225, 255});
+
+        DrawText("MENU PRINCIPAL", 280, 40, 30, MAGENTA);
+        DrawText("1 - Cena: Mensagem Misteriosa", 80, 120, 20, BLACK);
+        DrawText("2 - Cena: Brownie na Cantina", 80, 160, 20, BLACK);
+        DrawText("3 - Ver pistas coletadas", 80, 200, 20, BLACK);
+        DrawText("4 - Sair do jogo", 80, 240, 20, DARKGRAY);
+
+        EndDrawing();
+
+        if (IsKeyPressed(KEY_ONE)) {
+            cenaMensagemMisteriosa(&listaDePistas, 1);
+        }
+        if (IsKeyPressed(KEY_TWO)) {
+            cenaBrownieCantina(&listaDePistas, 1);
+        }
+        if (IsKeyPressed(KEY_THREE)) {
+            BeginDrawing();
+            ClearBackground(RAYWHITE);
+            DrawText("PISTAS COLETADAS:", 20, 20, 20, DARKBLUE);
+            mostrarPistasRaylib(listaDePistas);
+            EndDrawing();
+            while (!IsKeyPressed(KEY_ENTER)) {} // espera ENTER
+        }
+        if (IsKeyPressed(KEY_FOUR)) break;
+    }
+
+    liberarPistas(listaDePistas);
     CloseWindow();
 }
