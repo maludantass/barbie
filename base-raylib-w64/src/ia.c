@@ -10,7 +10,7 @@ void consultarIAComContexto(const char* promptCena, char* resposta) {
 
     static char promptFinal[4096];
     snprintf(promptFinal, sizeof(promptFinal), "%s%s", contextoPretendentes, promptCena);
-    consultarIA(promptFinal, resposta);
+    respt(promptFinal, resposta); // ← CORRIGIDO aqui
 }
 
 void modificarPistas(Pista** lista, const char* resposta) {
@@ -165,4 +165,3 @@ void cenaFofoqueira(Pista** lista, int usarIA) {
     consultarIAComContexto(promptCena, resposta);
     modificarPistas(lista, resposta);
 }
-// ======================= FIM CENAS =======================
