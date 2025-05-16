@@ -31,10 +31,11 @@ static size_t sbWrite(void *data, size_t size, size_t nmemb, void *userp) {
     return add;
 }
 
-void respt(const char *prompt, char *out) {
+// ✅ função agora tem o nome correto:
+void consultarIA(const char *prompt, char *resposta) {
     CURL *curl = curl_easy_init();
     if (!curl) {
-        strncpy(out, "Erro ao iniciar libcurl.", MAX_RESPOSTA);
+        strncpy(resposta, "Erro ao iniciar libcurl.", MAX_RESPOSTA);
         return;
     }
 
@@ -78,15 +79,15 @@ void respt(const char *prompt, char *out) {
     free(jsonReq);
 
     if (cret != CURLE_OK) {
-        snprintf(out, MAX_RESPOSTA, "Erro de rede: %s", curl_easy_strerror(cret));
+        snprintf(resposta, MAX_RESPOSTA, "Erro de rede: %s", curl_easy_strerror(cret));
     }
     else if (httpCode != 200) {
-        snprintf(out, MAX_RESPOSTA, "HTTP %ld devolvido pela API.", httpCode);
+        snprintf(resposta, MAX_RESPOSTA, "HTTP %ld devolvido pela API.", httpCode);
     }
     else {
         cJSON *rootResp = cJSON_Parse(resp.ptr);
         if (!rootResp) {
-            strncpy(out, "Falha ao parsear JSON de resposta.", MAX_RESPOSTA);
+            strncpy(resposta, "Falha ao parsear JSON de resposta.", MAX_RESPOSTA);
         }
         else {
             cJSON *cands = cJSON_GetObjectItemCaseSensitive(rootResp, "candidates");
@@ -103,16 +104,15 @@ void respt(const char *prompt, char *out) {
 
                 if (cJSON_IsString(txt)) {
                     printf("Resposta Gemini: %s\n", txt->valuestring);
-
-                    strncpy(out, txt->valuestring, MAX_RESPOSTA - 1);
-                    out[MAX_RESPOSTA - 1] = '\0';
+                    strncpy(resposta, txt->valuestring, MAX_RESPOSTA - 1);
+                    resposta[MAX_RESPOSTA - 1] = '\0';
                 } else {
-                    strncpy(out, "Campo \"text\" ausente ou inválido.", MAX_RESPOSTA);
+                    strncpy(resposta, "Campo \"text\" ausente ou inválido.", MAX_RESPOSTA);
                 }
             } else {
                 cJSON *err  = cJSON_GetObjectItemCaseSensitive(rootResp, "error");
                 cJSON *msg  = err ? cJSON_GetObjectItemCaseSensitive(err, "message") : NULL;
-                snprintf(out, MAX_RESPOSTA, "Erro da API: %s",
+                snprintf(resposta, MAX_RESPOSTA, "Erro da API: %s",
                          (msg && cJSON_IsString(msg)) ? msg->valuestring : "desconhecido");
             }
             cJSON_Delete(rootResp);
