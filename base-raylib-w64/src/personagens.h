@@ -1,11 +1,7 @@
-#ifndef PERSONAGENS_H
-#define PERSONAGENS_H
+//#ifndef PERSONAGENS_H
+//#define PERSONAGENS_H
 
-#include "pistas.h" // Você precisará incluir pistas.h aqui, pois essas funções trabalham com a struct Pista
+//void interagirComPersonagem(char *nome, char *respostaIA);
+//int analisarRespostaIA(const char *resposta);
 
-void ordenarPistasPorPersonagem(Pista** lista);
-Pista* filtrarPistasPorPersonagem(Pista* lista, const char* personagem);
-void contarPistasPorPersonagem(Pista* lista);
-void inserirOrdenado(Pista** ordenado, Pista* novaPista); 
-
-#endif
+//#endif

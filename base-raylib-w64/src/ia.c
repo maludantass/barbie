@@ -3,7 +3,6 @@
 #include "ia.h"
 #include "pistas.h"
 #include "gemini.h"
-#include "personagens.h"
 
 void consultarIAComContexto(const char* promptCena, char* resposta) {
     const char* contextoPretendentes =

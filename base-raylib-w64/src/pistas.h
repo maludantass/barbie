@@ -3,18 +3,19 @@
 
 typedef struct Pista {
     char descricao[256];        // Descrição da pista
-    int relevancia;             // Relevância da pista
-    struct Pista* prox;         // Próximo nó da lista
+    int relevancia;             // Relevância da pista (quanto mais alta, mais relevante)
+    struct Pista* prox;         // Ponteiro para o próximo nó
 } Pista;
 
-// Funções principais
+// Função para adicionar uma nova pista na lista
 void adicionarPista(Pista** lista, const char* descricao, int relevancia);
+
+// Função para exibir todas as pistas
 void mostrarPistas(Pista* lista);
-void mostrarPistasRaylib(Pista* lista);
-void ordenarPistasPorPersonagem(Pista** lista);  // <-- Corrigido aqui
+
+// Função para ordenar as pistas por relevância ou nome, conforme necessário
+void ordenarPistas(Pista** lista);
 void inserirOrdenado(Pista** ordenado, Pista* novaPista);
-void liberarPistas(Pista* lista);
-Pista* filtrarPistasPorPersonagem(Pista* lista, const char* personagem);
-void contarPistasPorPersonagem(Pista* lista);
+
 
 #endif
