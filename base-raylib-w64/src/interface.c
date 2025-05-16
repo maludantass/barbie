@@ -3,6 +3,7 @@
 #include "ia.h"
 #include "pistas.h"
 #include <string.h>
+#include <stdio.h>
 
 #define SCREEN_WIDTH 1800
 #define SCREEN_HEIGHT 950
@@ -10,6 +11,7 @@
 void mostrarInstrucoes();
 void executarCenas(Pista** lista);
 void mostrarResultadoFinal(Pista* lista);
+void mostrarCena(const char* texto, void (*funcaoCena)(Pista**, int), Pista** lista);
 
 void mostrarIntroducao() {
     InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Quem é o Crush Secreto da Barbie?");
@@ -131,60 +133,32 @@ void mostrarInstrucoes() {
     liberarPistas(listaDePistas);
 }
 
-void executarCenas(Pista** lista) {
+void mostrarCena(const char* texto, void (*funcaoCena)(Pista**, int), Pista** lista) {
     InitWindow(800, 600, "Investigando...");
     SetTargetFPS(60);
 
-    BeginDrawing();
-    ClearBackground(RAYWHITE);
-    DrawText("Investigando cena 1...", 100, 100, 20, DARKGRAY);
-    EndDrawing();
-    cenaMensagemMisteriosa(lista, 1);
-    WaitTime(1.5f);
+    float tempo = 0;
+    while (!WindowShouldClose()) {
+        BeginDrawing();
+        ClearBackground(RAYWHITE);
+        DrawText(texto, 100, 100, 20, DARKGRAY);
+        EndDrawing();
 
-    BeginDrawing();
-    ClearBackground(RAYWHITE);
-    DrawText("Investigando cena 2...", 100, 100, 20, DARKGRAY);
-    EndDrawing();
-    cenaBrownieCantina(lista, 1);
-    WaitTime(1.5f);
-
-    BeginDrawing();
-    ClearBackground(RAYWHITE);
-    DrawText("Investigando cena 3...", 100, 100, 20, DARKGRAY);
-    EndDrawing();
-    cenaComputadorLaboratorio(lista, 1);
-    WaitTime(1.5f);
-
-    BeginDrawing();
-    ClearBackground(RAYWHITE);
-    DrawText("Investigando cena 4...", 100, 100, 20, DARKGRAY);
-    EndDrawing();
-    cenaOlharNaQuadra(lista, 1);
-    WaitTime(1.5f);
-
-    BeginDrawing();
-    ClearBackground(RAYWHITE);
-    DrawText("Investigando cena 5...", 100, 100, 20, DARKGRAY);
-    EndDrawing();
-    cenaMarcadorBiblioteca(lista, 1);
-    WaitTime(1.5f);
-
-    BeginDrawing();
-    ClearBackground(RAYWHITE);
-    DrawText("Investigando cena 6...", 100, 100, 20, DARKGRAY);
-    EndDrawing();
-    cenaBilheteFesta(lista, 1);
-    WaitTime(1.5f);
-
-    BeginDrawing();
-    ClearBackground(RAYWHITE);
-    DrawText("Investigando cena 7...", 100, 100, 20, DARKGRAY);
-    EndDrawing();
-    cenaFofoqueira(lista, 1);
-    WaitTime(1.5f);
-
+        tempo += GetFrameTime();
+        if (tempo > 1.5f) break;
+    }
     CloseWindow();
+    funcaoCena(lista, 1);
+}
+
+void executarCenas(Pista** lista) {
+    mostrarCena("Investigando cena 1...", cenaMensagemMisteriosa, lista);
+    mostrarCena("Investigando cena 2...", cenaBrownieCantina, lista);
+    mostrarCena("Investigando cena 3...", cenaComputadorLaboratorio, lista);
+    mostrarCena("Investigando cena 4...", cenaOlharNaQuadra, lista);
+    mostrarCena("Investigando cena 5...", cenaMarcadorBiblioteca, lista);
+    mostrarCena("Investigando cena 6...", cenaBilheteFesta, lista);
+    mostrarCena("Investigando cena 7...", cenaFofoqueira, lista);
 }
 
 void mostrarResultadoFinal(Pista* lista) {
@@ -195,7 +169,15 @@ void mostrarResultadoFinal(Pista* lista) {
         BeginDrawing();
         ClearBackground(RAYWHITE);
         DrawText("PISTAS COLETADAS:", 20, 20, 20, DARKBLUE);
-        mostrarPistasRaylib(lista);
+
+        int y = 60;
+        for (Pista* temp = lista; temp != NULL; temp = temp->prox) {
+            char texto[512];
+            snprintf(texto, sizeof(texto), "- %s", temp->descricao);
+            DrawText(texto, 40, y, 18, DARKGRAY);
+            y += 30;
+        }
+
         DrawText("Pressione ENTER para encerrar.", 200, 550, 18, GRAY);
         EndDrawing();
 
