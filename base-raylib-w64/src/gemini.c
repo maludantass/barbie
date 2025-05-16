@@ -5,7 +5,7 @@
 #include "cJSON.h"
 #include "gemini.h"
 
-#define API_KEY "SUA_CHAVE_AQUI"
+#define API_KEY "AIzaSyAvyhhQo6Rncekxr8wK00IL8kBJpS340XA"
 #define MAX_RESPOSTA  1024
 
 typedef struct {
