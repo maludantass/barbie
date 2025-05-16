@@ -7,15 +7,12 @@ typedef struct Pista {
     struct Pista* prox;         // Ponteiro para o próximo nó
 } Pista;
 
-// Função para adicionar uma nova pista na lista
+// Funções principais da estrutura de dados
 void adicionarPista(Pista** lista, const char* descricao, int relevancia);
-
-// Função para exibir todas as pistas
 void mostrarPistas(Pista* lista);
-
-// Função para ordenar as pistas por relevância ou nome, conforme necessário
+void mostrarPistasRaylib(Pista* lista);
 void ordenarPistas(Pista** lista);
 void inserirOrdenado(Pista** ordenado, Pista* novaPista);
-
+void liberarPistas(Pista* lista);
 
 #endif
