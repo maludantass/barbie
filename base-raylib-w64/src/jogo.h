@@ -14,6 +14,5 @@
 // Funções para o jogo
 void adicionarPista(Pista** lista, const char* descricao, int relevancia);
 void mostrarPistas(Pista* lista);
-void ordenarPistas(Pista** lista);
 
 #endif

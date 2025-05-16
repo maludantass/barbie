@@ -42,6 +42,10 @@ void cenaMensagemMisteriosa(Pista** lista, int usarIA) {
     modificarPistas(lista, resposta);
 }
 
+void consultarIA(const char* prompt, char* resposta) {
+    respt(prompt, resposta);  // redireciona para a função correta
+}
+
 void cenaBrownieCantina(Pista** lista, int usarIA) {
     char resposta[1024];
     const char* promptCena;
