@@ -4,6 +4,8 @@
 #include "interface.h"  // <- necessário para mostrarIntroducao
 #include <stdio.h>
 #include "menu.h" 
+#include "final.h"
+
 
 #define SCREEN_WIDTH 1800
 #define SCREEN_HEIGHT 950
@@ -44,15 +46,8 @@ int main() {
     usarIA = escolhaJogadorComBotoes("🗣️ CENA 7: Fofoqueira Vanessa. Ouvir?");
     cenaFofoqueira(&lista, usarIA);
 
-    // Tela final
-    while (!WindowShouldClose()) {
-        BeginDrawing();
-        ClearBackground(RAYWHITE);
-        DrawText("🔍 Todas as cenas foram jogadas!", 500, 400, 30, BLACK);
-        DrawText("Pressione ENTER para sair.", 500, 450, 20, GRAY);
-        EndDrawing();
-        if (IsKeyPressed(KEY_ENTER)) break;
-    }
+    // Tela de adivinhação no final
+    telaFinalAdivinhacao();
 
     liberarPistas(lista);
     CloseAudioDevice();
