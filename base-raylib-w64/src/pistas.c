@@ -4,81 +4,100 @@
 #include <stdio.h>
 #include "pistas.h"
 
-// Função para adicionar uma nova pista à lista
+// 🔧 Declaração antecipada
+void inserirOrdenado(Pista** ordenado, Pista* novaPista);
+
 void adicionarPista(Pista** lista, const char* descricao, int relevancia) {
-    Pista* nova = (Pista*)malloc(sizeof(Pista));  // Aloca memória para a nova pista
-    if (nova == NULL) {  // Verifica se a alocação de memória foi bem-sucedida
-       
-        return;
-    }
+    Pista* nova = (Pista*)malloc(sizeof(Pista));
+    if (nova == NULL) return;
 
-    // Copia a descrição da pista para o nó
     strncpy(nova->descricao, descricao, sizeof(nova->descricao) - 1);
-    nova->descricao[sizeof(nova->descricao) - 1] = '\0';  // Garante que a string esteja terminada corretamente
-    nova->relevancia = relevancia;  // Define a relevância
-    nova->prox = *lista;  // Adiciona no início da lista
-
-    *lista = nova;  // Atualiza o ponteiro para a lista
+    nova->descricao[sizeof(nova->descricao) - 1] = '\0';
+    nova->relevancia = relevancia;
+    nova->prox = *lista;
+    *lista = nova;
 }
 
-// Função para mostrar as pistas
+// Mostra todas as pistas no terminal (debug ou modo texto)
 void mostrarPistas(Pista* lista) {
-    Pista* temp = lista;
-    while (temp != NULL) {
-        printf("Pista: %s (Relevância: %d)\n", temp->descricao, temp->relevancia);
-        temp = temp->prox;
+    Pista* atual = lista;
+    printf("=== Pistas Coletadas ===\n");
+    while (atual != NULL) {
+        printf("• %s (Relevância: %d)\n", atual->descricao, atual->relevancia);
+        atual = atual->prox;
     }
 }
 
-// Função para mostrar as pistas usando Raylib (para a interface do jogo)
+// Mostra todas as pistas visualmente com Raylib
 void mostrarPistasRaylib(Pista* lista) {
     int yOffset = 50;
     int lineHeight = 20;
     int padding = 10;
 
-    BeginDrawing();
-    ClearBackground(RAYWHITE);
+    while (!WindowShouldClose()) {
+        BeginDrawing();
+        ClearBackground(RAYWHITE);
 
-    if (lista == NULL) {
-        DrawText("Nenhuma pista coletada ainda.", 100, 100, 20, BLACK);
-    } else {
-        DrawText("--- Pistas Coletadas ---", 100, yOffset, 20, BLACK);
-        yOffset += lineHeight + padding;
+        if (lista == NULL) {
+            DrawText("Nenhuma pista coletada ainda.", 100, 100, 20, BLACK);
+        } else {
+            DrawText("--- Pistas Coletadas ---", 100, yOffset, 20, BLACK);
+            yOffset = 80;
 
-        Pista* temp = lista;
-        while (temp != NULL) {
-            char text[300];
-            snprintf(text, sizeof(text), "Pista: %s (Relevância: %d)", temp->descricao, temp->relevancia);
-            DrawText(text, 100, yOffset, 16, DARKGRAY);
-            yOffset += lineHeight;
-            temp = temp->prox;
+            Pista* temp = lista;
+            while (temp != NULL) {
+                char text[300];
+                snprintf(text, sizeof(text), "Pista: %s (Relevância: %d)", temp->descricao, temp->relevancia);
+                DrawText(text, 100, yOffset, 16, DARKGRAY);
+                yOffset += lineHeight + padding;
+                temp = temp->prox;
+            }
+            DrawText("--- Fim das Pistas ---", 100, yOffset + 10, 20, BLACK);
         }
-        DrawText("--- Fim das Pistas ---", 100, yOffset + padding, 20, BLACK);
-    }
 
-    EndDrawing();
+        DrawText("Pressione ENTER para continuar", 100, 850, 20, GRAY);
+        EndDrawing();
+
+        if (IsKeyPressed(KEY_ENTER)) break;
+    }
 }
 
+// Mostra uma única pista isolada (por cena)
+void mostrarPistaUnicaRaylib(const char* texto) {
+    while (!WindowShouldClose()) {
+        BeginDrawing();
+        ClearBackground(RAYWHITE);
 
-// Função para ordenar as pistas por nome do personagem (Insertion Sort)
-void ordenarPistasPorPersonagem(Pista** lista) {
-    if (*lista == NULL || (*lista)->prox == NULL) {
-        // Lista vazia ou com apenas um elemento, já está ordenada
-        return;
+        if (texto == NULL || strlen(texto) == 0) {
+            DrawText("Nenhuma pista nesta cena.", 100, 100, 20, BLACK);
+        } else {
+            DrawText("--- Pista Coletada ---", 100, 80, 20, BLACK);
+            DrawText(texto, 100, 120, 18, DARKGRAY);
+        }
+
+        DrawText("Pressione ENTER para continuar", 100, 850, 20, GRAY);
+        EndDrawing();
+
+        if (IsKeyPressed(KEY_ENTER)) break;
     }
-    Pista* ordenado = NULL; // Nova lista ordenada
+}
+
+// Ordena a lista de pistas em ordem alfabética pela descrição
+void ordenarPistasPorPersonagem(Pista** lista) {
+    if (*lista == NULL || (*lista)->prox == NULL) return;
+
+    Pista* ordenado = NULL;
     Pista* atual = *lista;
     while (atual != NULL) {
         Pista* proximo = atual->prox;
         inserirOrdenado(&ordenado, atual);
         atual = proximo;
     }
-    *lista = ordenado; // Atualiza a lista original para a lista ordenada
+    *lista = ordenado;
 }
 
 void inserirOrdenado(Pista** ordenado, Pista* novaPista) {
     if (*ordenado == NULL || strcmp(novaPista->descricao, (*ordenado)->descricao) < 0) {
-        // Inserir no início
         novaPista->prox = *ordenado;
         *ordenado = novaPista;
     } else {
@@ -91,69 +110,46 @@ void inserirOrdenado(Pista** ordenado, Pista* novaPista) {
     }
 }
 
-// Função para imprimir a lista 
-void imprimirLista(Pista* lista) {
-    Pista* temp = lista;
-    while (temp != NULL) {
-        printf("%s -> ", temp->descricao);
-        temp = temp->prox;
-    }
-    printf("NULL\n");
-}
-
-//filtrar por personagem-->FUNCIONOU
+// Filtra pistas que contêm o nome do personagem na descrição
 Pista* filtrarPistasPorPersonagem(Pista* lista, const char* personagem) {
-    Pista* filtrada = NULL;
+    Pista* filtradas = NULL;
 
     while (lista != NULL) {
-        printf("Checando pista: %s\n", lista->descricao);//funciona para debug
         if (strstr(lista->descricao, personagem) != NULL) {
-            printf(">>> Achou personagem: %s\n", personagem); //para debug
-            adicionarPista(&filtrada, lista->descricao, lista->relevancia);
+            adicionarPista(&filtradas, lista->descricao, lista->relevancia);
         }
         lista = lista->prox;
     }
 
-    return filtrada;
+    return filtradas;
 }
 
-//contar qnts pistas cada personagem teve-->AINDA EM TESTE
+// Conta quantas pistas mencionam cada personagem
 void contarPistasPorPersonagem(Pista* lista) {
-    if (lista == NULL) {
-        printf("Nenhuma pista para contar.\n");
-        return;
-    }
+    const char* personagens[] = {"Micucci", "Bruno", "Felipe", "Samuca"};
+    int contadores[4] = {0};
 
-    const char* personagens[] = {"Ken", "Ryan"};
-    int numPersonagens = sizeof(personagens) / sizeof(personagens[0]);
-    int contadores[numPersonagens];
-    
-    for (int i = 0; i < numPersonagens; i++) {
-        contadores[i] = 0;
-    }
-
-    Pista* temp = lista;
-    while (temp != NULL) {
-        for (int i = 0; i < numPersonagens; i++) {
-            if (strstr(temp->descricao, personagens[i]) != NULL) {
+    while (lista != NULL) {
+        for (int i = 0; i < 4; i++) {
+            if (strstr(lista->descricao, personagens[i]) != NULL) {
                 contadores[i]++;
             }
         }
-        temp = temp->prox;
+        lista = lista->prox;
     }
 
     printf("=== Contagem de Pistas por Personagem ===\n");
-    for (int i = 0; i < numPersonagens; i++) {
+    for (int i = 0; i < 4; i++) {
         printf("%s: %d pistas\n", personagens[i], contadores[i]);
     }
 }
 
-//funcao de liberar pista-->BASICA, EM TESTE
+// Libera toda a memória da lista
 void liberarPistas(Pista* lista) {
     Pista* atual = lista;
     while (atual != NULL) {
         Pista* temp = atual;
         atual = atual->prox;
-        free(temp);  // Libera a memória do nó atual
+        free(temp);
     }
 }

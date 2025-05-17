@@ -2,17 +2,24 @@
 #define PISTAS_H
 
 typedef struct Pista {
-    char descricao[256];        // Descrição da pista
-    int relevancia;             // Relevância da pista (quanto mais alta, mais relevante)
-    struct Pista* prox;         // Ponteiro para o próximo nó
+    char descricao[256];
+    int relevancia;
+    struct Pista* prox;
 } Pista;
 
-// Funções principais da estrutura de dados
+// Cria uma nova pista e adiciona na lista
 void adicionarPista(Pista** lista, const char* descricao, int relevancia);
-void mostrarPistas(Pista* lista);
+
+// Mostra todas as pistas acumuladas (para uso no final do jogo)
 void mostrarPistasRaylib(Pista* lista);
-void ordenarPistas(Pista** lista);
-void inserirOrdenado(Pista** ordenado, Pista* novaPista);
+
+// Mostra apenas uma pista isolada na tela (por cena)
+void mostrarPistaUnicaRaylib(const char* texto);
+
+// Ordena as pistas por nome
+void ordenarPistasPorPersonagem(Pista** lista);
+
+// Libera a memória da lista de pistas
 void liberarPistas(Pista* lista);
 
 #endif
