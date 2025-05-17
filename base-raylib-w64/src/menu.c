@@ -54,3 +54,16 @@ void exibirMenu(Pista** listaPistas) {
         }
     }
 }
+void verificarCliqueNoBotaoMenu(Pista** listaPistas) {
+    Rectangle botaoMenu = { 1700, 20, 60, 60 };  // canto superior direito
+    Vector2 mouse = GetMousePosition();
+
+    // Desenhar botão com ícone 📝
+    DrawRectangleRec(botaoMenu, CheckCollisionPointRec(mouse, botaoMenu) ? LIGHTGRAY : GRAY);
+    DrawText("📝", botaoMenu.x + 15, botaoMenu.y + 10, 32, BLACK);
+
+    // Se clicou no botão, abre o menu
+    if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON) && CheckCollisionPointRec(mouse, botaoMenu)) {
+        exibirMenu(listaPistas);
+    }
+}

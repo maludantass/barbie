@@ -124,7 +124,6 @@ Pista* filtrarPistasPorPersonagem(Pista* lista, const char* personagem) {
     return filtradas;
 }
 
-// Conta quantas pistas mencionam cada personagem
 void contarPistasPorPersonagem(Pista* lista) {
     const char* personagens[] = {"Micucci", "Bruno", "Felipe", "Samuca"};
     int contadores[4] = {0};
@@ -138,11 +137,27 @@ void contarPistasPorPersonagem(Pista* lista) {
         lista = lista->prox;
     }
 
-    printf("=== Contagem de Pistas por Personagem ===\n");
-    for (int i = 0; i < 4; i++) {
-        printf("%s: %d pistas\n", personagens[i], contadores[i]);
+    // Mostra os resultados na tela
+    while (!WindowShouldClose()) {
+        BeginDrawing();
+        ClearBackground(RAYWHITE);
+
+        DrawText("📊 Contagem de Pistas por Personagem", 500, 100, 30, DARKPURPLE);
+
+        for (int i = 0; i < 4; i++) {
+            char texto[100];
+            snprintf(texto, sizeof(texto), "%s: %d pistas", personagens[i], contadores[i]);
+            DrawText(texto, 600, 180 + i * 40, 24, BLACK);
+        }
+
+        DrawText("Pressione ENTER para voltar ao menu", 550, 400, 20, GRAY);
+
+        EndDrawing();
+
+        if (IsKeyPressed(KEY_ENTER)) break;
     }
 }
+
 
 // Libera toda a memória da lista
 void liberarPistas(Pista* lista) {

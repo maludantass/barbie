@@ -5,5 +5,7 @@
 
 // Exibe o menu principal visual do jogo
 void exibirMenu(Pista** listaPistas);
+void verificarCliqueNoBotaoMenu(Pista** listaPistas);
+
 
 #endif

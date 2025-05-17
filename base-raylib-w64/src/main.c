@@ -10,7 +10,7 @@
 #define SCREEN_WIDTH 1800
 #define SCREEN_HEIGHT 950
 
-int escolhaJogadorComBotoes(const char* pergunta);
+int escolhaJogadorComBotoes(const char* pergunta, Pista** listaPistas);
 
 int main() {
     InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Barbie's Love Detective");
@@ -25,25 +25,25 @@ int main() {
 
     int usarIA;
 
-    usarIA = escolhaJogadorComBotoes("📱 CENA 1: Mensagem misteriosa. Investigar?");
+    usarIA = escolhaJogadorComBotoes("📱 CENA 1: Mensagem misteriosa. Investigar?", &lista);
     cenaMensagemMisteriosa(&lista, usarIA);
 
-    usarIA = escolhaJogadorComBotoes("🍫 CENA 2: Brownie da cantina. Investigar?");
+    usarIA = escolhaJogadorComBotoes("🍫 CENA 2: Brownie da cantina. Investigar?", &lista);
     cenaBrownieCantina(&lista, usarIA);
 
-    usarIA = escolhaJogadorComBotoes("💻 CENA 3: Computador do laboratório. Investigar?");
+    usarIA = escolhaJogadorComBotoes("💻 CENA 3: Computador do laboratório. Investigar?", &lista);
     cenaComputadorLaboratorio(&lista, usarIA);
 
-    usarIA = escolhaJogadorComBotoes("🏀 CENA 4: Olhar na quadra. Observar?");
+    usarIA = escolhaJogadorComBotoes("🏀 CENA 4: Olhar na quadra. Observar?", &lista);
     cenaOlharNaQuadra(&lista, usarIA);
 
-    usarIA = escolhaJogadorComBotoes("📚 CENA 5: Marcador na biblioteca. Investigar?");
+    usarIA = escolhaJogadorComBotoes("📚 CENA 5: Marcador na biblioteca. Investigar?", &lista);
     cenaMarcadorBiblioteca(&lista, usarIA);
 
-    usarIA = escolhaJogadorComBotoes("💌 CENA 6: Bilhete na festa. Ler?");
+    usarIA = escolhaJogadorComBotoes("💌 CENA 6: Bilhete na festa. Ler?", &lista);
     cenaBilheteFesta(&lista, usarIA);
 
-    usarIA = escolhaJogadorComBotoes("🗣️ CENA 7: Fofoqueira Vanessa. Ouvir?");
+    usarIA = escolhaJogadorComBotoes("🗣️ CENA 7: Fofoqueira Vanessa. Ouvir?", &lista);
     cenaFofoqueira(&lista, usarIA);
 
     // Tela de adivinhação no final
@@ -56,7 +56,7 @@ int main() {
 }
 
 
-int escolhaJogadorComBotoes(const char* pergunta) {
+int escolhaJogadorComBotoes(const char* pergunta, Pista** listaPistas) {
     Rectangle botaoSim = { 500, 400, 300, 80 };
     Rectangle botaoNao = { 1000, 400, 300, 80 };
     Vector2 mouse;
@@ -76,6 +76,9 @@ int escolhaJogadorComBotoes(const char* pergunta) {
         DrawText("NÃO", botaoNao.x + 100, botaoNao.y + 25, 30, WHITE);
 
         DrawText("Clique para escolher", 700, 600, 20, GRAY);
+
+        // ✅ Aqui funciona agora
+        verificarCliqueNoBotaoMenu(listaPistas);
 
         EndDrawing();
 
