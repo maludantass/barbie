@@ -22,4 +22,11 @@ void ordenarPistasPorPersonagem(Pista** lista);
 // Libera a memória da lista de pistas
 void liberarPistas(Pista* lista);
 
+// Conta quantas pistas mencionam cada personagem
+void contarPistasPorPersonagem(Pista* lista);
+
+// Filtra pistas que contêm o nome do personagem na descrição
+Pista* filtrarPistasPorPersonagem(Pista* lista, const char* personagem);
+
+
 #endif

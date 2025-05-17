@@ -3,6 +3,7 @@
 #include "pistas.h"
 #include "interface.h"  // <- necessário para mostrarIntroducao
 #include <stdio.h>
+#include "menu.h" 
 
 #define SCREEN_WIDTH 1800
 #define SCREEN_HEIGHT 950
@@ -10,15 +11,16 @@
 int escolhaJogadorComBotoes(const char* pergunta);
 
 int main() {
-    // INTRODUÇÃO ANIMADA DO JOGO
-    mostrarIntroducao();
-
-    // Depois da intro, inicia novamente a janela do jogo
-    InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Barbie's Love Detective - Escolhas com Botões");
+    InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Barbie's Love Detective");
     InitAudioDevice();
     SetTargetFPS(60);
+    Pista* lista = NULL;     
 
-    Pista* lista = NULL;
+    // INTRODUÇÃO ANIMADA DO JOGO
+    mostrarIntroducao();  // NÃO fecha a janela
+    exibirMenu(&lista);  // Mostra o menu antes das cenas começarem
+
+
     int usarIA;
 
     usarIA = escolhaJogadorComBotoes("📱 CENA 1: Mensagem misteriosa. Investigar?");
@@ -57,6 +59,7 @@ int main() {
     CloseWindow();
     return 0;
 }
+
 
 int escolhaJogadorComBotoes(const char* pergunta) {
     Rectangle botaoSim = { 500, 400, 300, 80 };

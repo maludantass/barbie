@@ -8,8 +8,6 @@
 
 
 void mostrarIntroducao() {
-    InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Quem é o Crush Secreto da Barbie?");
-    InitAudioDevice();
     SetTargetFPS(60);
 
 
@@ -159,6 +157,4 @@ void mostrarIntroducao() {
     UnloadTexture(barbie);
     UnloadMusicStream(introMusica);
     UnloadMusicStream(menuMusica);
-    CloseAudioDevice();
-    CloseWindow();
 }
