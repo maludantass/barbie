@@ -107,7 +107,6 @@ Projeto desenvolvido por estudantes da **CESAR School** para a disciplina de Alg
 - Maria Julia Dantas  
 - Maria Luiza Dantas  
 
-> Desenvolvido com 💅, 🌸 e muita lógica!
 
 ---
 
