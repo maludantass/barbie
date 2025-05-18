@@ -5,7 +5,7 @@
 
 // Funções que representam as cenas do jogo
 void cenaMensagemMisteriosa(Pista** lista, int usarIA);
-void cenaBrownieCantina(Pista** lista, int usarIA);
+void cenaCupcakeCantina(Pista** lista, int usarIA);
 void cenaComputadorLaboratorio(Pista** lista, int usarIA);
 void cenaOlharNaQuadra(Pista** lista, int usarIA);
 void cenaMarcadorBiblioteca(Pista** lista, int usarIA);

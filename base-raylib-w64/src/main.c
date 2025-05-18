@@ -28,8 +28,8 @@ int main() {
         usarIA = escolhaJogadorComBotoes("📱 CENA 1: Mensagem misteriosa. Investigar?", &lista);
         cenaMensagemMisteriosa(&lista, usarIA);
 
-        usarIA = escolhaJogadorComBotoes("🍫 CENA 2: Brownie da cantina. Investigar?", &lista);
-        cenaBrownieCantina(&lista, usarIA);
+        usarIA = escolhaJogadorComBotoes("🍫 CENA 2: Cupcake da cantina. Investigar?", &lista);
+        cenaMarcadorBiblioteca(&lista, usarIA);
 
         usarIA = escolhaJogadorComBotoes("💻 CENA 3: Computador do laboratório. Investigar?", &lista);
         cenaComputadorLaboratorio(&lista, usarIA);
