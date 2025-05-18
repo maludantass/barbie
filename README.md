@@ -1,114 +1,101 @@
 # 💘 Barbie’s Love Detective
-
-Um jogo de mistério romântico onde o jogador precisa descobrir quem é o crush secreto da Barbie. Com uma narrativa interativa, pistas enigmáticas e a ajuda de uma Inteligência Artificial, cada partida traz uma experiência diferente.
-
----
-
-## 🎮 Sobre o Jogo
-
-**Barbie’s Love Detective** é um jogo desenvolvido em **C** que integra:
-
-- 📚 **Estruturas de dados** (listas encadeadas)
-- ⚙️ **Algoritmo de ordenação** (Insertion Sort)
-- 🤖 **Integração com API de Inteligência Artificial** (Gemini)
-- 🖼️ **Interface gráfica com Raylib**
-
-A narrativa se adapta conforme as escolhas do jogador, e a IA altera dinamicamente pistas, diálogos e possíveis finais.
+Um jogo investigativo e encantador feito em C com Raylib!  
+Assuma o papel de detetive e descubra, através de pistas misteriosas geradas por uma IA, quem é o admirador secreto da Barbie!  
+Prepare-se para cenas fofas, mistério fashion e decisões dedutivas.
 
 ---
 
-## 🧠 Estrutura de Dados
+## ✨ Sobre o Jogo
 
-### Lista Encadeada de Pistas
+O jogador acompanha cenas envolvendo Barbie e interage com situações que revelam pistas.  
+Essas pistas são geradas dinamicamente por uma **IA integrada com a API do Gemini (Google)**, tornando cada investigação **única**.
 
-Cada pista é um nó em uma lista ligada. A lista é fundamental para a lógica do jogo, pois é constantemente manipulada durante as interações:
-
-- Ao interagir com personagens, novas pistas são adicionadas.
-- A IA pode inserir pistas falsas ou remover pistas irrelevantes.
-- As pistas são ordenadas por relevância a cada rodada.
-- O jogador pode visualizar ou investigar pistas em tempo real.
-
-> A manipulação dessa estrutura influencia diretamente o rumo da investigação, as suspeitas levantadas e as decisões do jogador.
+O jogo é dividido em:
+- Introdução animada com música
+- Tela de instruções
+- Sete cenas investigativas
+- Resultado final com as pistas coletadas exibidas visualmente
 
 ---
 
-## ⚡ Algoritmo de Ordenação
+## 🧠 Funcionalidades
 
-### Insertion Sort
-
-Usado para reorganizar os suspeitos ou pistas com base no grau de suspeita/relevância atribuído pela IA ou pelas ações do jogador.
-
----
-
-## 🤖 API de Inteligência Artificial
-
-### Gemini (Google AI)
-
-Responsável por:
-
-- Gerar trechos narrativos personalizados
-- Modificar comportamentos de personagens
-- Adicionar ou alterar pistas com base nas escolhas do jogador
-- Criar finais alternativos
+- ✅ Cenas com narrativa interativa
+- ✅ Integração com API da IA para gerar pistas diferentes a cada rodada
+- ✅ Lista encadeada para armazenar pistas
+- ✅ Exibição gráfica das pistas usando Raylib
+- ✅ Tela de introdução com animação e áudio
+- ✅ Reinício possível após uma rodada
 
 ---
 
-## 🔧 Funções Principais
+## 📁 Estrutura do Projeto
 
-- `inserirPista()`
-- `removerPista()`
-- `ordenarPistas()`
-- `interagirPersonagem()`
-- `consultarIA()`
-- `mostrarMenu()`
-- `verificarCondicaoVitoria()`
-
----
-
-## 🖼️ Interface Gráfica
-
-### Raylib
-
-- Interface com botões e diálogos
-- Tela inicial com botão “Começar”
-- Exibição de pistas e respostas da IA
-- Navegação entre escolhas
-
----
-
-## 💻 Como Executar
-
-### 🔧 Requisitos
-
-- Compilador C (`gcc`)
-- `libcurl` (para comunicação com a API)
-- Internet (para chamadas à API Gemini)
-- Raylib (para interface gráfica)
-
-### 📦 Passos
-
-```bash
-git clone https://github.com/seu-usuario/BarbiesLoveDetective.git
-cd BarbiesLoveDetective
-gcc main.c -o jogo -lcurl
-./jogo
 ```
 
-### 🎨 Para compilar com Raylib:
+base-raylib-w64/
+├── assets/              # Imagens e músicas do jogo
+├── curl/                # Lib curl e includes
+├── include/             # Headers do projeto (.h)
+├── lib\_raylib/          # Biblioteca Raylib compilada
+├── src/                 # Códigos-fonte (.c)
+│   ├── main.c
+│   ├── interface.c
+│   ├── ia.c
+│   ├── gemini.c
+│   ├── pistas.c
+│   ├── personagens.c
+│   ├── jogo.c
+├── bin/                 # Executável gerado
+├── makefile             # Script de compilação
+
+````
+
+---
+
+## 🛠️ Como Compilar
+
+Você precisa ter:
+- Raylib instalado e configurado (já incluso na pasta `lib_raylib`)
+- Libcurl (já incluso na pasta `curl/`)
+- Compilador GCC via MSYS2, MinGW ou W64DevKit
+
+### 💻 Passo a passo no terminal:
+
+Abra o terminal dentro da pasta `base-raylib-w64` e execute:
 
 ```bash
-gcc main.c -o jogo -lraylib -lcurl -lm -ldl -lpthread
+make
+````
+
+Isso irá compilar o projeto e gerar o executável em `bin/app.exe`.
+
+### ▶️ Para rodar o jogo:
+
+```bash
+make run
+```
+
+Ou diretamente:
+
+```bash
+./bin/app.exe
 ```
 
 ---
 
-## 📽️ Vídeo
+## 📌 Dependências
 
-🎥 Será disponibilizado na entrega final.
+* [Raylib](https://www.raylib.com/) — v5.5
+* [libcurl](https://curl.se/libcurl/)
+* [cJSON](https://github.com/DaveGamble/cJSON)
+* API Gemini (Google AI) — Para geração de pistas automáticas
 
 ---
 
 ## 👩‍💻 Equipe
+
+Projeto desenvolvido por estudantes da **CESAR School** para a disciplina de Algoritmos e Estruturas de Dados.
 
 - Amanda Montarroios  
 - Fabiana Coelho  
@@ -116,25 +103,13 @@ gcc main.c -o jogo -lraylib -lcurl -lm -ldl -lpthread
 - Maria Julia Dantas  
 - Maria Luiza Dantas  
 
----
-
-## 📚 Referências
-
-- API Gemini – Google AI
-- Notas de aula (Estrutura de Dados – 2025)
-- Raylib (https://www.raylib.com/)
-- libcurl – HTTP requests em C
+> Desenvolvido com 💅, 🌸 e muita lógica!
 
 ---
 
-## 🌟 Destaques
+## 🧪 Observação
 
-- IA personalizada altera história e pistas
-- Uso prático de lista encadeada com manipulação dinâmica
-- Ordenação com finalidade narrativa (relevância e suspeita)
-- Interface opcional com Raylib
-- Tema criativo: romance + mistério
+* Se quiser reiniciar o jogo após uma rodada, feche a janela e rode novamente o executável. As pistas serão **diferentes** a cada partida!
 
 ---
 
-> Feito com 💗 por um time apaixonado por programação e boas histórias.
