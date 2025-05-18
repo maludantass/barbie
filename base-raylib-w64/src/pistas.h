@@ -28,5 +28,15 @@ void contarPistasPorPersonagem(Pista* lista);
 // Filtra pistas que contêm o nome do personagem na descrição
 Pista* filtrarPistasPorPersonagem(Pista* lista, const char* personagem);
 
+void ordenarPistasPorPersonagem(Pista** lista);
+
+Pista* mergeOrdenado(Pista* a, Pista* b);
+
+int compararPistas(const Pista* a, const Pista* b);
+
+void dividirLista(Pista* fonte, Pista** frente, Pista** atras);
+
+const char* extrairPersonagem(const char* descricao); 
+
 
 #endif

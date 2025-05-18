@@ -82,34 +82,6 @@ void mostrarPistaUnicaRaylib(const char* texto) {
     }
 }
 
-// Ordena a lista de pistas em ordem alfabética pela descrição
-void ordenarPistasPorPersonagem(Pista** lista) {
-    if (*lista == NULL || (*lista)->prox == NULL) return;
-
-    Pista* ordenado = NULL;
-    Pista* atual = *lista;
-    while (atual != NULL) {
-        Pista* proximo = atual->prox;
-        inserirOrdenado(&ordenado, atual);
-        atual = proximo;
-    }
-    *lista = ordenado;
-}
-
-void inserirOrdenado(Pista** ordenado, Pista* novaPista) {
-    if (*ordenado == NULL || strcmp(novaPista->descricao, (*ordenado)->descricao) < 0) {
-        novaPista->prox = *ordenado;
-        *ordenado = novaPista;
-    } else {
-        Pista* atual = *ordenado;
-        while (atual->prox != NULL && strcmp(novaPista->descricao, atual->prox->descricao) > 0) {
-            atual = atual->prox;
-        }
-        novaPista->prox = atual->prox;
-        atual->prox = novaPista;
-    }
-}
-
 // Filtra pistas que contêm o nome do personagem na descrição
 Pista* filtrarPistasPorPersonagem(Pista* lista, const char* personagem) {
     Pista* filtradas = NULL;
@@ -167,4 +139,84 @@ void liberarPistas(Pista* lista) {
         atual = atual->prox;
         free(temp);
     }
+}
+
+//para o mergesort-> requisito
+const char* personagens[] = {"Micucci", "Bruno", "Felipe", "Samuca"};
+#define QTD_PERSONAGENS 4
+
+const char* extrairPersonagem(const char* descricao) {
+    for (int i = 0; i < QTD_PERSONAGENS; i++) {
+        if (strstr(descricao, personagens[i]) != NULL) {
+            return personagens[i];
+        }
+    } // caso não ache nenhum personagem
+}
+
+// Função para dividir a lista em duas metades
+void dividirLista(Pista* fonte, Pista** frente, Pista** atras) {
+    Pista* lento;
+    Pista* rapido;
+    lento = fonte;
+    rapido = fonte->prox;
+
+    while (rapido != NULL) {
+        rapido = rapido->prox;
+        if (rapido != NULL) {
+            lento = lento->prox;
+            rapido = rapido->prox;
+        }
+    }
+
+    *frente = fonte;
+    *atras = lento->prox;
+    lento->prox = NULL;
+}
+
+// Comparar duas pistas pela ordem alfabética do personagem na descrição
+int compararPistas(const Pista* a, const Pista* b) {
+    const char* pA = extrairPersonagem(a->descricao);
+    const char* pB = extrairPersonagem(b->descricao);
+
+    if (pA == NULL && pB == NULL) return 0; 
+    if (pA == NULL) return 1;               
+    if (pB == NULL) return -1;                
+
+    return strcmp(pA, pB);
+}
+
+// Função de merge para duas listas ordenadas
+Pista* mergeOrdenado(Pista* a, Pista* b) {
+    Pista* resultado = NULL;
+
+    if (a == NULL)
+        return b;
+    else if (b == NULL)
+        return a;
+
+    if (compararPistas(a, b) <= 0) {
+        resultado = a;
+        resultado->prox = mergeOrdenado(a->prox, b);
+    } else {
+        resultado = b;
+        resultado->prox = mergeOrdenado(a, b->prox);
+    }
+    return resultado;
+}
+
+// Função merge sort principal para ordenar a lista
+void ordenarPistasPorPersonagem(Pista** lista) {
+    if (*lista == NULL || (*lista)->prox == NULL) {
+        return;
+    }
+
+    Pista* frente;
+    Pista* atras;
+
+    dividirLista(*lista, &frente, &atras);
+
+    ordenarPistasPorPersonagem(&frente);
+    ordenarPistasPorPersonagem(&atras);
+
+    *lista = mergeOrdenado(frente, atras);
 }

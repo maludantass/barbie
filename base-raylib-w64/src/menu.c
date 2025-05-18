@@ -46,7 +46,8 @@ void exibirMenu(Pista** listaPistas) {
 
             if (escolha >= 0 && escolha < 4) {
                 Pista* filtradas = filtrarPistasPorPersonagem(*listaPistas, nomes[escolha]);
-                mostrarPistasRaylib(filtradas);
+                ordenarPistasPorPersonagem(listaPistas);
+                mostrarPistasRaylib(*listaPistas);
                 liberarPistas(filtradas);
             }
         } else if (IsKeyPressed(KEY_FOUR)) {
