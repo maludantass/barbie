@@ -82,6 +82,10 @@ Ou diretamente:
 ./bin/app.exe
 ```
 
+ Comando real:
+```bash
+gcc -Wall -std=c99 -Iinclude -Icurl/include src/*.c -o bin/app.exe -Llib_raylib -Lcurl/lib -lraylib -lcurl -lopengl32 -lgdi32 -lwinmm
+```
 ---
 
 ## 📌 Dependências
