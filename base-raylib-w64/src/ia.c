@@ -5,6 +5,9 @@
 #include "gemini.h"
 #include "raylib.h"
 
+#define SCREEN_WIDTH 1800
+#define SCREEN_HEIGHT 950
+
 void consultarIAComContexto(const char* promptCena, char* resposta) {
     const char* contextoPretendentes =
         "Você é uma Inteligência Artificial investigativa dentro de um jogo fofo, divertido e cheio de mistério, onde o jogador está tentando descobrir quem é o admirador secreto da Barbie.\n\n"
@@ -19,7 +22,8 @@ void consultarIAComContexto(const char* promptCena, char* resposta) {
         "A seguir virão as cenas. Para cada uma, gere uma resposta curta, charmosa e investigativa. \n\nPrompt:\n";
 
     static char promptFinal[4096];
-    snprintf(promptFinal, sizeof(promptFinal), "%s%s", contextoPretendentes, promptCena);
+    int variacao = GetRandomValue(1, 99999);  // Gera um ID de variação
+    snprintf(promptFinal, sizeof(promptFinal), "%s%s\n\n[Variação Jogador: %d]", contextoPretendentes, promptCena, variacao);
     respt(promptFinal, resposta);
 }
 
