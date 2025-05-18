@@ -3,9 +3,12 @@
 #include <string.h>
 #include <stdio.h>
 #include "pistas.h"
+#define QTD_PERSONAGENS 4
 
-// 🔧 Declaração antecipada
-void inserirOrdenado(Pista** ordenado, Pista* novaPista);
+typedef struct {
+    const char* nome;
+    int contador;
+} RankingPersonagem;
 
 void adicionarPista(Pista** lista, const char* descricao, int relevancia) {
     Pista* nova = (Pista*)malloc(sizeof(Pista));
@@ -82,6 +85,7 @@ void mostrarPistaUnicaRaylib(const char* texto) {
     }
 }
 
+
 // Filtra pistas que contêm o nome do personagem na descrição
 Pista* filtrarPistasPorPersonagem(Pista* lista, const char* personagem) {
     Pista* filtradas = NULL;
@@ -97,29 +101,44 @@ Pista* filtrarPistasPorPersonagem(Pista* lista, const char* personagem) {
 }
 
 void contarPistasPorPersonagem(Pista* lista) {
-    const char* personagens[] = {"Micucci", "Bruno", "Felipe", "Samuca"};
-    int contadores[4] = {0};
+    RankingPersonagem ranking[QTD_PERSONAGENS] = {
+        {"Micucci", 0},
+        {"Bruno", 0},
+        {"Felipe", 0},
+        {"Samuca", 0}
+    };
 
     while (lista != NULL) {
-        for (int i = 0; i < 4; i++) {
-            if (strstr(lista->descricao, personagens[i]) != NULL) {
-                contadores[i]++;
+        for (int i = 0; i < QTD_PERSONAGENS; i++) {
+            if (strstr(lista->descricao, ranking[i].nome) != NULL) {
+                ranking[i].contador++;
             }
         }
         lista = lista->prox;
     }
 
-    // Mostra os resultados na tela
+    // Bubble Sort decrescente por contador
+    for (int i = 0; i < QTD_PERSONAGENS - 1; i++) {
+        for (int j = 0; j < QTD_PERSONAGENS - 1 - i; j++) {
+            if (ranking[j].contador < ranking[j + 1].contador) {
+                RankingPersonagem temp = ranking[j];
+                ranking[j] = ranking[j + 1];
+                ranking[j + 1] = temp;
+            }
+        }
+    }
+
+    // Mostrar ranking na tela com Raylib
     while (!WindowShouldClose()) {
         BeginDrawing();
         ClearBackground(RAYWHITE);
 
-        DrawText("📊 Contagem de Pistas por Personagem", 500, 100, 30, DARKPURPLE);
+        DrawText("🏆 Ranking de Pistas por Personagem", 500, 100, 30, DARKPURPLE);
 
-        for (int i = 0; i < 4; i++) {
+        for (int i = 0; i < QTD_PERSONAGENS; i++) {
             char texto[100];
-            snprintf(texto, sizeof(texto), "%s: %d pistas", personagens[i], contadores[i]);
-            DrawText(texto, 600, 180 + i * 40, 24, BLACK);
+            snprintf(texto, sizeof(texto), "%dº - %s: %d pistas", i + 1, ranking[i].nome, ranking[i].contador);
+            DrawText(texto, 550, 180 + i * 40, 24, BLACK);
         }
 
         DrawText("Pressione ENTER para voltar ao menu", 550, 400, 20, GRAY);
@@ -130,7 +149,6 @@ void contarPistasPorPersonagem(Pista* lista) {
     }
 }
 
-
 // Libera toda a memória da lista
 void liberarPistas(Pista* lista) {
     Pista* atual = lista;
@@ -139,85 +157,4 @@ void liberarPistas(Pista* lista) {
         atual = atual->prox;
         free(temp);
     }
-}
-
-//para o mergesort-> requisito
-const char* personagens[] = {"Micucci", "Bruno", "Felipe", "Samuca"};
-#define QTD_PERSONAGENS 4
-
-const char* extrairPersonagem(const char* descricao) {
-    for (int i = 0; i < QTD_PERSONAGENS; i++) {
-        if (strstr(descricao, personagens[i]) != NULL) {
-            return personagens[i];
-        }
-    } // caso não ache nenhum personagem
-    return NULL;
-}
-
-// Função para dividir a lista em duas metades
-void dividirLista(Pista* fonte, Pista** frente, Pista** atras) {
-    Pista* lento;
-    Pista* rapido;
-    lento = fonte;
-    rapido = fonte->prox;
-
-    while (rapido != NULL) {
-        rapido = rapido->prox;
-        if (rapido != NULL) {
-            lento = lento->prox;
-            rapido = rapido->prox;
-        }
-    }
-
-    *frente = fonte;
-    *atras = lento->prox;
-    lento->prox = NULL;
-}
-
-// Comparar duas pistas pela ordem alfabética do personagem na descrição
-int compararPistas(const Pista* a, const Pista* b) {
-    const char* pA = extrairPersonagem(a->descricao);
-    const char* pB = extrairPersonagem(b->descricao);
-
-    if (pA == NULL && pB == NULL) return 0; 
-    if (pA == NULL) return 1;               
-    if (pB == NULL) return -1;                
-
-    return strcmp(pA, pB);
-}
-
-// Função de merge para duas listas ordenadas
-Pista* mergeOrdenado(Pista* a, Pista* b) {
-    Pista* resultado = NULL;
-
-    if (a == NULL)
-        return b;
-    else if (b == NULL)
-        return a;
-
-    if (compararPistas(a, b) <= 0) {
-        resultado = a;
-        resultado->prox = mergeOrdenado(a->prox, b);
-    } else {
-        resultado = b;
-        resultado->prox = mergeOrdenado(a, b->prox);
-    }
-    return resultado;
-}
-
-// Função merge sort principal para ordenar a lista
-void ordenarPistasPorPersonagem(Pista** lista) {
-    if (*lista == NULL || (*lista)->prox == NULL) {
-        return;
-    }
-
-    Pista* frente;
-    Pista* atras;
-
-    dividirLista(*lista, &frente, &atras);
-
-    ordenarPistasPorPersonagem(&frente);
-    ordenarPistasPorPersonagem(&atras);
-
-    *lista = mergeOrdenado(frente, atras);
 }
