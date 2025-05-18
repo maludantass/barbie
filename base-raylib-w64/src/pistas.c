@@ -151,6 +151,7 @@ const char* extrairPersonagem(const char* descricao) {
             return personagens[i];
         }
     } // caso não ache nenhum personagem
+    return NULL;
 }
 
 // Função para dividir a lista em duas metades
