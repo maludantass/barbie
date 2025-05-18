@@ -52,8 +52,8 @@ DEFINIR_CENA(cenaMensagemMisteriosa,
     "O jogador viu o celular da Barbie vibrar com uma mensagem de número desconhecido dizendo 'Vamos sair?'. Barbie não percebeu. O número está em grupos escolares antigos. Um dos colegas, conhecido por ser muito reservado e tímido, costuma evitar conversas presenciais e prefere mandar mensagens discretas. Esse perfil lembra Micucci, que ainda participa silenciosamente desses grupos. O que pode ser deduzido sobre o remetente da mensagem?",
     "O jogador ignorou a mensagem misteriosa. Mais tarde, escuta Vanessa dizendo: \"Esse número é igual ao do Samuca. Vive mandando mensagem chamando as meninas de ‘parça’. Deve ser ele.\" Samuca é extrovertido, brincalhão e atleta. Com base nessa fofoca, o que pode ser deduzido sobre o remetente?")
 
-DEFINIR_CENA(cenaBrownieCantina,
-    "O jogador ouviu que alguém deixou um brownie com bilhete para a Barbie. A funcionária lembra que o garoto usava capuz e uma mochila com estampa de time de basquete. Samuca é jogador de basquete e anda sempre com roupa de treino. Micucci também costuma usar capuz, mas raramente entra no refeitório. O que pode ser deduzido sobre o possível autor do presente?",
+DEFINIR_CENA(cenaCupcakeCantina,
+    "O jogador ouviu que alguém deixou um cupcake com bilhete para a Barbie. A funcionária lembra que o garoto usava capuz e uma mochila com estampa de time de basquete. Samuca é jogador de basquete e anda sempre com roupa de treino. Micucci também costuma usar capuz, mas raramente entra no refeitório. O que pode ser deduzido sobre o possível autor do presente?",
     "O jogador optou por não investigar. Mais tarde, ouve alguém comentar: \"Bruno vive fazendo essas brincadeiras românticas. Aposto que foi ele.\" Bruno é popular e brincalhão, mas essa informação é baseada apenas em suposição. O que pode ser deduzido?")
 
 DEFINIR_CENA(cenaComputadorLaboratorio,
