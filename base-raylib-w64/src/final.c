@@ -18,8 +18,9 @@ void telaFinalAdivinhacao() {
 
     int acertou = -1;
 
-    // Carregar fundo
-    Texture2D fundo = LoadTexture("assets/dentro casa.jpg");
+    // Carregar fundo inicial
+    Texture2D fundoInicial = LoadTexture("assets/dentro casa.jpg");
+    Texture2D fundoFinal   = LoadTexture("assets/final.jpg");
 
     // Escolha do jogador
     while (acertou == -1 && !WindowShouldClose()) {
@@ -27,15 +28,24 @@ void telaFinalAdivinhacao() {
 
         BeginDrawing();
         ClearBackground(RAYWHITE);
-        DrawTexture(fundo, 0, 0, WHITE);
 
-        DrawText(" Quem você acha que é o crush secreto da Barbie?", 300, 150, 30, DARKPURPLE);
+        DrawTexturePro(
+            fundoInicial,
+            (Rectangle){0, 0, fundoInicial.width, fundoInicial.height},
+            (Rectangle){0, 0, SCREEN_WIDTH, SCREEN_HEIGHT},
+            (Vector2){0, 0},
+            0.0f,
+            WHITE
+        );
+        DrawRectangle(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, (Color){255, 182, 193, 120});
+
+        DrawText(" Quem você acha que é o crush secreto da Barbie?", 300, 150, 30, BLACK);
 
         for (int i = 0; i < 4; i++) {
             bool hover = CheckCollisionPointRec(mouse, botoes[i]);
             Color corBotao = hover ? (Color){255, 105, 180, 255} : (Color){255, 182, 193, 255}; // Hot pink e rosa claro
 
-            DrawRectangleRounded(botoes[i], 0.5f, 12, corBotao); // Cantos arredondados
+            DrawRectangleRounded(botoes[i], 0.5f, 12, corBotao);
             int textWidth = MeasureText(personagens[i], 30);
             DrawText(personagens[i], botoes[i].x + (botoes[i].width - textWidth) / 2, botoes[i].y + 20, 30, BLACK);
         }
@@ -51,7 +61,7 @@ void telaFinalAdivinhacao() {
         }
     }
 
-    // Se acertou, prepare música de vitória
+    // Se acertou, prepara música de vitória
     Music finalMusic = {0};
     if (acertou == 1) {
         finalMusic = LoadMusicStream("assets/finalcerto.mp3");
@@ -65,12 +75,23 @@ void telaFinalAdivinhacao() {
 
         BeginDrawing();
         ClearBackground(RAYWHITE);
-        DrawTexture(fundo, 0, 0, WHITE);
 
-        if (acertou == 1) {
-            DrawText(" Parabéns! Você acertou quem é o crush da Barbie!", 300, 400, 30, DARKGREEN);
-        } else {
-            DrawText(" Não foi dessa vez!", 600, 400, 30, RED);
+        Texture2D fundoAtual = (acertou == 1) ? fundoFinal : fundoInicial;
+
+        DrawTexturePro(
+            fundoAtual,
+            (Rectangle){0, 0, fundoAtual.width, fundoAtual.height},
+            (Rectangle){0, 0, SCREEN_WIDTH, SCREEN_HEIGHT},
+            (Vector2){0, 0},
+            0.0f,
+            WHITE
+        );
+
+        // Sobreposição rosa transparente se errar
+        if (acertou == 0) {
+            DrawRectangle(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, (Color){255, 182, 193, 150});
+       
+            DrawText("Não foi dessa vez!", 600, 400, 30, RED);
         }
 
         DrawText("Pressione ENTER para continuar", 600, 600, 20, DARKGRAY);
@@ -84,5 +105,6 @@ void telaFinalAdivinhacao() {
         UnloadMusicStream(finalMusic);
     }
 
-    UnloadTexture(fundo);
+    UnloadTexture(fundoInicial);
+    UnloadTexture(fundoFinal);
 }

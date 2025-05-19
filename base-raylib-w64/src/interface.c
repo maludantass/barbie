@@ -32,8 +32,8 @@ void mostrarIntroducao() {
 
     const char *frases[] = {
         "Oi, eu sou a Barbie... e algo super estranho começou a acontecer!",
-"Bilhetes anônimos começaram a aparecer com mensagens fofas e misteriosas...",
-"Agora só me resta uma opção: preciso de ajuda para descobrir quem é meu admirador secreto!",
+        "Bilhetes anônimos começaram a aparecer com mensagens fofas e misteriosas...",
+        "Agora só me resta uma opção: preciso de ajuda para descobrir quem é meu admirador secreto!",
         
 
     };
@@ -147,11 +147,11 @@ void mostrarIntroducao() {
             DrawRectangle(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, (Color){255, 182, 193, 120});
 
             DrawText("Como jogar:", 725, 200, 40, DARKPURPLE);
-DrawText("Você vai mergulhar em cenas cheias de mistério e romance!", 405, 290, 30, BLACK);
-DrawText("Em cada situação, clique na opção que mais combina com sua intuição.", 385, 340, 26, BLACK);
-DrawText("Cada escolha revela uma pista verdadeira... ou uma distração!", 425, 390, 26, BLACK);
-DrawText("No final, clique para escolher quem você acha que é o admirador secreto!", 375, 440, 26, BLACK);
-DrawText("Pressione ESPAÇO para começar a investigação!", 625, 520, 28, BLACK );
+            DrawText("Você vai mergulhar em cenas cheias de mistério e romance!", 405, 290, 30, BLACK);
+            DrawText("Em cada situação, clique na opção que mais combina com sua intuição.", 385, 340, 26, BLACK);
+            DrawText("Cada escolha revela uma pista verdadeira... ou uma distração!", 425, 390, 26, BLACK);
+            DrawText("No final, clique para escolher quem você acha que é o admirador secreto!", 375, 440, 26, BLACK);
+            DrawText("Pressione ESPAÇO para começar a investigação!", 625, 520, 28, BLACK );
 
 
             if (IsKeyPressed(KEY_SPACE)) {
