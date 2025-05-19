@@ -1,5 +1,3 @@
-// final.c
-
 #include "raylib.h"
 #include <string.h>
 #include "final.h"
@@ -10,6 +8,7 @@
 void telaFinalAdivinhacao() {
     const char* personagens[] = {"Micucci", "Bruno", "Felipe", "Samuca"};
     const char* crushReal     = "Micucci";
+
     Rectangle botoes[4] = {
         {400, 300, 300, 70},
         {800, 300, 300, 70},
@@ -19,18 +18,26 @@ void telaFinalAdivinhacao() {
 
     int acertou = -1;
 
+    // Carregar fundo
+    Texture2D fundo = LoadTexture("assets/dentro casa.jpg");
+
     // Escolha do jogador
     while (acertou == -1 && !WindowShouldClose()) {
         Vector2 mouse = GetMousePosition();
 
         BeginDrawing();
         ClearBackground(RAYWHITE);
-        DrawText("🧠 Quem você acha que é o crush secreto da Barbie?", 300, 150, 30, DARKPURPLE);
+        DrawTexture(fundo, 0, 0, WHITE);
+
+        DrawText(" Quem você acha que é o crush secreto da Barbie?", 300, 150, 30, DARKPURPLE);
 
         for (int i = 0; i < 4; i++) {
-            Color cor = CheckCollisionPointRec(mouse, botoes[i]) ? SKYBLUE : LIGHTGRAY;
-            DrawRectangleRec(botoes[i], cor);
-            DrawText(personagens[i], botoes[i].x + 20, botoes[i].y + 20, 30, BLACK);
+            bool hover = CheckCollisionPointRec(mouse, botoes[i]);
+            Color corBotao = hover ? (Color){255, 105, 180, 255} : (Color){255, 182, 193, 255}; // Hot pink e rosa claro
+
+            DrawRectangleRounded(botoes[i], 0.5f, 12, corBotao); // Cantos arredondados
+            int textWidth = MeasureText(personagens[i], 30);
+            DrawText(personagens[i], botoes[i].x + (botoes[i].width - textWidth) / 2, botoes[i].y + 20, 30, BLACK);
         }
 
         EndDrawing();
@@ -48,24 +55,22 @@ void telaFinalAdivinhacao() {
     Music finalMusic = {0};
     if (acertou == 1) {
         finalMusic = LoadMusicStream("assets/finalcerto.mp3");
-        // Avança para o minuto 1:07 (67 segundos)
-        SeekMusicStream(finalMusic, 67.0f);
+        SeekMusicStream(finalMusic, 67.0f); // Avança para 1:07
         PlayMusicStream(finalMusic);
     }
 
     // Tela de resultado
     while (!WindowShouldClose()) {
-        // Atualiza o streaming da música de vitória, se estiver tocando
         if (acertou == 1) UpdateMusicStream(finalMusic);
 
         BeginDrawing();
         ClearBackground(RAYWHITE);
+        DrawTexture(fundo, 0, 0, WHITE);
 
         if (acertou == 1) {
-            DrawText("🎉 Parabéns! Você acertou quem é o crush da Barbie!", 400, 400, 30, DARKGREEN);
+            DrawText(" Parabéns! Você acertou quem é o crush da Barbie!", 300, 400, 30, DARKGREEN);
         } else {
-            DrawText("😢 Não foi dessa vez! ", 500, 400, 30, RED);
-            
+            DrawText(" Não foi dessa vez!", 600, 400, 30, RED);
         }
 
         DrawText("Pressione ENTER para continuar", 600, 600, 20, DARKGRAY);
@@ -74,9 +79,10 @@ void telaFinalAdivinhacao() {
         if (IsKeyPressed(KEY_ENTER)) break;
     }
 
-    // Para e descarrega a música de vitória
     if (acertou == 1) {
         StopMusicStream(finalMusic);
         UnloadMusicStream(finalMusic);
     }
+
+    UnloadTexture(fundo);
 }

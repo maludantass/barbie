@@ -14,6 +14,8 @@ void mostrarIntroducao() {
     Texture2D fundo = LoadTexture("assets/casa.jpg");
     Texture2D carro = LoadTexture("assets/carro.png");
     Texture2D barbie = LoadTexture("assets/barbie.png");
+    Texture2D fundoInstrucoes = LoadTexture("assets/dentro casa.jpg");
+
     Music introMusica = LoadMusicStream("assets/BarbieGirl.mp3");
     Music menuMusica = LoadMusicStream("assets/DreamHouse.mp3");
     PlayMusicStream(introMusica);
@@ -29,9 +31,11 @@ void mostrarIntroducao() {
 
 
     const char *frases[] = {
-        "Olá! Eu sou a Barbie... e estou prestes a viver um mistério cheio de romance!",
-        "Nos últimos dias, bilhetes misteriosos apareceram na minha porta...",
-        "E agora eu preciso descobrir quem está por trás disso!"
+        "Oi, eu sou a Barbie... e algo super estranho começou a acontecer!",
+"Bilhetes anônimos começaram a aparecer com mensagens fofas e misteriosas...",
+"Agora só me resta uma opção: preciso de ajuda para descobrir quem é meu admirador secreto!",
+        
+
     };
     int fraseAtual = 0;
     int textoIndex = 0;
@@ -134,11 +138,20 @@ void mostrarIntroducao() {
                 pulouIntro = true;
             }
         } else {
-            ClearBackground((Color){255, 182, 193, 255});
-            DrawText("Instruções do Jogo:", 600, 200, 40, DARKPURPLE);
-            DrawText("Explore os cenários e descubra quem é o admirador secreto da Barbie!", 300, 300, 30, BLACK);
-            DrawText("Use as setas para se mover, pressione 1, 2 ou 3 para responder perguntas.", 280, 360, 26, BLACK);
-            DrawText("Pressione ESPAÇO para Começar", 600, 500, 28, DARKGRAY);
+
+            
+
+            DrawTexturePro(fundoInstrucoes, (Rectangle){0, 0, fundoInstrucoes.width, fundoInstrucoes.height},
+               (Rectangle){0, 0, SCREEN_WIDTH, SCREEN_HEIGHT}, (Vector2){0, 0}, 0.0f, WHITE);
+
+            DrawRectangle(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, (Color){255, 182, 193, 120});
+
+            DrawText("Como jogar:", 725, 200, 40, DARKPURPLE);
+DrawText("Você vai mergulhar em cenas cheias de mistério e romance!", 405, 290, 30, BLACK);
+DrawText("Em cada situação, clique na opção que mais combina com sua intuição.", 385, 340, 26, BLACK);
+DrawText("Cada escolha revela uma pista verdadeira... ou uma distração!", 425, 390, 26, BLACK);
+DrawText("No final, clique para escolher quem você acha que é o admirador secreto!", 375, 440, 26, BLACK);
+DrawText("Pressione ESPAÇO para começar a investigação!", 625, 520, 28, BLACK );
 
 
             if (IsKeyPressed(KEY_SPACE)) {
@@ -150,7 +163,7 @@ void mostrarIntroducao() {
         EndDrawing();
     }
 
-
+    UnloadTexture(fundoInstrucoes);
     UnloadTexture(fundo);
     UnloadTexture(carro);
     UnloadTexture(barbie);

@@ -3,13 +3,62 @@
 #include <string.h>
 #include <stdio.h>
 #include "pistas.h"
+
 #define QTD_PERSONAGENS 4
+#define SCREEN_WIDTH 1800
+#define SCREEN_HEIGHT 950
 
 typedef struct {
     const char* nome;
     int contador;
 } RankingPersonagem;
 
+// === Função para desenhar texto centralizado com quebra automática de linha ===
+void DrawTextRec(Font font, const char* text, Rectangle bounds, float fontSize, float spacing, bool wordWrap, Color tint) {
+    const int length = strlen(text);
+    int start = 0;
+    int line = 0;
+    char buffer[1024];
+
+    int i = 0;
+    while (i <= length) {
+        int wordStart = i;
+        while (i <= length) {
+            if (text[i] == ' ' || text[i] == '\0' || text[i] == '\n') {
+                strncpy(buffer, &text[start], i - start);
+                buffer[i - start] = '\0';
+
+                Vector2 textSize = MeasureTextEx(font, buffer, fontSize, spacing);
+                if (textSize.x > bounds.width * 0.45f || text[i] == '\n') break;
+
+                if (text[i] == '\n') {
+                    i++;
+                    break;
+                }
+                i++;
+            } else {
+                i++;
+            }
+        }
+
+        int count = i - start;
+        strncpy(buffer, &text[start], count);
+        buffer[count] = '\0';
+
+        Vector2 textSize = MeasureTextEx(font, buffer, fontSize, spacing);
+        float textX = bounds.x + (bounds.width - textSize.x) / 2.0f;
+
+        int lineSpacing = fontSize + 12;
+        float totalHeight = 10 * lineSpacing;
+        float startY = bounds.y;
+
+        DrawTextEx(font, buffer, (Vector2){ textX, startY + line * lineSpacing }, fontSize, spacing, tint);
+        start = i;
+        line++;
+    }
+}
+
+// === Função para adicionar pista na lista encadeada ===
 void adicionarPista(Pista** lista, const char* descricao, int relevancia) {
     Pista* nova = (Pista*)malloc(sizeof(Pista));
     if (nova == NULL) return;
@@ -21,7 +70,7 @@ void adicionarPista(Pista** lista, const char* descricao, int relevancia) {
     *lista = nova;
 }
 
-// Mostra todas as pistas no terminal (debug ou modo texto)
+// === Função de debug via terminal ===
 void mostrarPistas(Pista* lista) {
     Pista* atual = lista;
     printf("=== Pistas Coletadas ===\n");
@@ -31,41 +80,45 @@ void mostrarPistas(Pista* lista) {
     }
 }
 
-// Mostra todas as pistas visualmente com Raylib
-void mostrarPistasRaylib(Pista* lista) {
-    int yOffset = 50;
-    int lineHeight = 20;
-    int padding = 10;
+// === Exibição visual das pistas coletadas ===
+void mostrarPistasRaylib(Pista* lista, Texture2D menuImg, Rectangle menuArea) {
+    Font fontePadrao = GetFontDefault();
 
     while (!WindowShouldClose()) {
         BeginDrawing();
         ClearBackground(RAYWHITE);
 
-        if (lista == NULL) {
-            DrawText("Nenhuma pista coletada ainda.", 100, 100, 20, BLACK);
-        } else {
-            DrawText("--- Pistas Coletadas ---", 100, yOffset, 20, BLACK);
-            yOffset = 80;
+        DrawRectangle(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, (Color){255, 182, 193, 90});
+        DrawTexturePro(menuImg, (Rectangle){0, 0, menuImg.width, menuImg.height}, menuArea, (Vector2){0, 0}, 0.0f, WHITE);
 
+        const char* titulo = "--- Pistas Coletadas ---";
+        DrawText(titulo, menuArea.x + (menuArea.width - MeasureText(titulo, 22)) / 2, menuArea.y + 190, 22, BLACK);
+
+        Rectangle textoArea = { menuArea.x, menuArea.y + 240, menuArea.width, 600 };
+
+        if (lista == NULL) {
+            const char* msg = "Nenhuma pista coletada ainda.";
+            DrawText(msg, menuArea.x + (menuArea.width - MeasureText(msg, 22)) / 2, textoArea.y, 22, BLACK);
+        } else {
             Pista* temp = lista;
             while (temp != NULL) {
-                char text[300];
-                snprintf(text, sizeof(text), "Pista: %s (Relevância: %d)", temp->descricao, temp->relevancia);
-                DrawText(text, 100, yOffset, 16, DARKGRAY);
-                yOffset += lineHeight + padding;
+                char linha[300];
+                snprintf(linha, sizeof(linha), "Pista: %s (Relevância: %d)", temp->descricao, temp->relevancia);
+                DrawTextRec(fontePadrao, linha, textoArea, 20, 1, true, DARKGRAY);
+                textoArea.y += 120; // espaçamento entre pistas
                 temp = temp->prox;
             }
-            DrawText("--- Fim das Pistas ---", 100, yOffset + 10, 20, BLACK);
         }
 
-        DrawText("Pressione ENTER para continuar", 100, 850, 20, GRAY);
+        const char* instrucoes = "Pressione ENTER para voltar ao menu";
+        DrawText(instrucoes, menuArea.x + (menuArea.width - MeasureText(instrucoes, 20)) / 2, 860, 20, GRAY);
         EndDrawing();
 
         if (IsKeyPressed(KEY_ENTER)) break;
     }
 }
 
-// Mostra uma única pista isolada (por cena)
+// === Exibição de uma única pista ===
 void mostrarPistaUnicaRaylib(const char* texto) {
     while (!WindowShouldClose()) {
         BeginDrawing();
@@ -85,22 +138,20 @@ void mostrarPistaUnicaRaylib(const char* texto) {
     }
 }
 
-
-// Filtra pistas que contêm o nome do personagem na descrição
+// === Filtra pistas que contenham o nome do personagem ===
 Pista* filtrarPistasPorPersonagem(Pista* lista, const char* personagem) {
     Pista* filtradas = NULL;
-
     while (lista != NULL) {
         if (strstr(lista->descricao, personagem) != NULL) {
             adicionarPista(&filtradas, lista->descricao, lista->relevancia);
         }
         lista = lista->prox;
     }
-
     return filtradas;
 }
 
-void contarPistasPorPersonagem(Pista* lista) {
+// === Contagem e exibição de ranking de pistas por personagem ===
+void contarPistasPorPersonagem(Pista* lista, Texture2D menuImg, Rectangle menuArea) {
     RankingPersonagem ranking[QTD_PERSONAGENS] = {
         {"Micucci", 0},
         {"Bruno", 0},
@@ -117,7 +168,6 @@ void contarPistasPorPersonagem(Pista* lista) {
         lista = lista->prox;
     }
 
-    // Bubble Sort decrescente por contador
     for (int i = 0; i < QTD_PERSONAGENS - 1; i++) {
         for (int j = 0; j < QTD_PERSONAGENS - 1 - i; j++) {
             if (ranking[j].contador < ranking[j + 1].contador) {
@@ -128,20 +178,24 @@ void contarPistasPorPersonagem(Pista* lista) {
         }
     }
 
-    // Mostrar ranking na tela com Raylib
     while (!WindowShouldClose()) {
         BeginDrawing();
         ClearBackground(RAYWHITE);
 
-        DrawText("🏆 Ranking de Pistas por Personagem", 500, 100, 30, DARKPURPLE);
+        DrawRectangle(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, (Color){255, 182, 193, 90});
+        DrawTexturePro(menuImg, (Rectangle){0, 0, menuImg.width, menuImg.height}, menuArea, (Vector2){0, 0}, 0.0f, WHITE);
+
+        const char* titulo = "Ranking de Pistas por Personagem";
+        DrawText(titulo, menuArea.x + (menuArea.width - MeasureText(titulo, 30)) / 2, menuArea.y + 150, 30, DARKPURPLE);
 
         for (int i = 0; i < QTD_PERSONAGENS; i++) {
             char texto[100];
             snprintf(texto, sizeof(texto), "%dº - %s: %d pistas", i + 1, ranking[i].nome, ranking[i].contador);
-            DrawText(texto, 550, 180 + i * 40, 24, BLACK);
+            DrawText(texto, menuArea.x + (menuArea.width - MeasureText(texto, 24)) / 2, menuArea.y + 230 + i * 45, 24, BLACK);
         }
 
-        DrawText("Pressione ENTER para voltar ao menu", 550, 400, 20, GRAY);
+        const char* instrucoes = "Pressione ENTER para voltar ao menu";
+        DrawText(instrucoes, menuArea.x + (menuArea.width - MeasureText(instrucoes, 20)) / 2, menuArea.y + 460, 20, GRAY);
 
         EndDrawing();
 
@@ -149,7 +203,7 @@ void contarPistasPorPersonagem(Pista* lista) {
     }
 }
 
-// Libera toda a memória da lista
+// === Libera memória da lista de pistas ===
 void liberarPistas(Pista* lista) {
     Pista* atual = lista;
     while (atual != NULL) {

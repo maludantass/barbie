@@ -112,7 +112,7 @@ Projeto desenvolvido por estudantes da **CESAR School** para a disciplina de Alg
 
 ## 🧪 Observação
 
-* Se quiser reiniciar o jogo após uma rodada, feche a janela e rode novamente o executável. As pistas serão **diferentes** a cada partida!
+*            As pistas serão **diferentes** a cada partida!
 
 ---
 

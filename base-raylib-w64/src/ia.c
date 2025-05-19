@@ -83,7 +83,7 @@ void nomeFuncao(Pista** lista, int usarIA, const char *bgFilename) {            
                     int lw = 0, wi = 0;                                                            \
                     for (int i = 0; raw[i] && wi < (int)sizeof(wrapped)-1; i++) {                   \
                         char c = raw[i];                                                            \
-                        if (lw >= 60 && c == ' ') {                                                 \
+                        if (lw >= 128 && c == ' ') {                                                 \
                             wrapped[wi++] = '\n';                                                   \
                             lw = 0;                                                                 \
                         } else {                                                                    \
@@ -122,7 +122,7 @@ void nomeFuncao(Pista** lista, int usarIA, const char *bgFilename) {            
                        (Vector2){120,620}, 24,1, BLACK);                                              \
             if (currLen >= totalLen)                                                                 \
                 DrawText("Pressione ENTER ou ESPAÇO para continuar",                                 \
-                         120,820,20,DARKGRAY);                                                       \
+                         120,820,20,BLACK);                                                       \
         }                                                                                           \
         EndDrawing();                                                                               \
     }                                                                                               \
