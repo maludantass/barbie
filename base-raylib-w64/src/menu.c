@@ -1,12 +1,21 @@
+// menu.c
+
 #include "menu.h"
 #include "raylib.h"
 #include <string.h>
 #include <stdio.h>
 
+// Referências às variáveis globais de áudio (definidas em main.c)
+extern Music gameplayMusic;
+extern bool  musicIsPlaying;
+
 void exibirMenu(Pista** listaPistas) {
     int iniciarJogo = 0;
 
     while (!iniciarJogo && !WindowShouldClose()) {
+        // mantém o áudio rolando durante o menu
+        if (musicIsPlaying) UpdateMusicStream(gameplayMusic);
+
         BeginDrawing();
         ClearBackground(RAYWHITE);
 
@@ -28,6 +37,9 @@ void exibirMenu(Pista** listaPistas) {
             int escolha = -1;
 
             while (escolha == -1 && !WindowShouldClose()) {
+                // também atualiza aqui
+                if (musicIsPlaying) UpdateMusicStream(gameplayMusic);
+
                 BeginDrawing();
                 ClearBackground(RAYWHITE);
                 DrawText("Escolha o personagem para filtrar:", 100, 80, 24, BLACK);
@@ -54,16 +66,20 @@ void exibirMenu(Pista** listaPistas) {
         }
     }
 }
+
 void verificarCliqueNoBotaoMenu(Pista** listaPistas) {
-    Rectangle botaoMenu = { 1700, 20, 60, 60 };  // canto superior direito
+    Rectangle botaoMenu = {1700, 20, 60, 60};
     Vector2 mouse = GetMousePosition();
 
-    // Desenhar botão com ícone 📝
-    DrawRectangleRec(botaoMenu, CheckCollisionPointRec(mouse, botaoMenu) ? LIGHTGRAY : GRAY);
+    // mantém o áudio enquanto desenha o botão
+    if (musicIsPlaying) UpdateMusicStream(gameplayMusic);
+
+    DrawRectangleRec(botaoMenu,
+        CheckCollisionPointRec(mouse, botaoMenu) ? LIGHTGRAY : GRAY);
     DrawText("📝", botaoMenu.x + 15, botaoMenu.y + 10, 32, BLACK);
 
-    // Se clicou no botão, abre o menu
-    if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON) && CheckCollisionPointRec(mouse, botaoMenu)) {
+    if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON) &&
+        CheckCollisionPointRec(mouse, botaoMenu)) {
         exibirMenu(listaPistas);
     }
 }

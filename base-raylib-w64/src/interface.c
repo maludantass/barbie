@@ -121,7 +121,7 @@ void mostrarIntroducao() {
                 DrawText(TextSubtext(frases[fraseAtual], 0, textoIndex), 820, 840, 24, BLACK);
 
 
-                DrawText("Pressione ENTER para continuar", 600, 900, 20, DARKGRAY);
+                DrawText("Pressione ENTER para continuar ou ESPAÇO para pular", 600, 900, 20, DARKGRAY);
                 if (IsKeyPressed(KEY_ENTER) && textoIndex >= strlen(frases[fraseAtual])) {
                     fraseAtual++;
                     if (fraseAtual >= 3) pulouIntro = true;
@@ -130,7 +130,6 @@ void mostrarIntroducao() {
             }
 
 
-            DrawText("Pressione ESPAÇO para pular", 20, 900, 20, DARKGRAY);
             if (IsKeyPressed(KEY_SPACE)) {
                 pulouIntro = true;
             }
