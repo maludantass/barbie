@@ -22,7 +22,6 @@ void DrawTextRec(Font font, const char* text, Rectangle bounds, float fontSize, 
 
     int i = 0;
     while (i <= length) {
-        int wordStart = i;
         while (i <= length) {
             if (text[i] == ' ' || text[i] == '\0' || text[i] == '\n') {
                 strncpy(buffer, &text[start], i - start);
@@ -49,7 +48,6 @@ void DrawTextRec(Font font, const char* text, Rectangle bounds, float fontSize, 
         float textX = bounds.x + (bounds.width - textSize.x) / 2.0f;
 
         int lineSpacing = fontSize + 12;
-        float totalHeight = 10 * lineSpacing;
         float startY = bounds.y;
 
         DrawTextEx(font, buffer, (Vector2){ textX, startY + line * lineSpacing }, fontSize, spacing, tint);
