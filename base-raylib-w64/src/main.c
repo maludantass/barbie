@@ -22,7 +22,7 @@ int main() {
     InitAudioDevice();
     SetTargetFPS(60);
 
-    gameplayMusic = LoadMusicStream("assets/musicajogo.mp3");
+    gameplayMusic = LoadMusicStream("assets/DreamHouse.mp3");
     SetMusicVolume(gameplayMusic, 0.1f);
     gameplayMusic.looping = true;
 

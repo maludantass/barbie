@@ -17,10 +17,14 @@ void telaFinalAdivinhacao() {
     };
 
     int acertou = -1;
+    int escolha = -1;
 
     // Carregar fundo inicial
-    Texture2D fundoInicial = LoadTexture("assets/dentro casa.jpg");
-    Texture2D fundoFinal   = LoadTexture("assets/final.jpg");
+    Texture2D fundoInicial  = LoadTexture("assets/dentro casa.jpg");
+    Texture2D fundoFinal    = LoadTexture("assets/finalMicucci.jpg");
+    Texture2D fundoErradoBruno  = LoadTexture("assets/finalBruno.jpg");
+    Texture2D fundoErradoFelipe = LoadTexture("assets/finalFelipe.jpg");
+    Texture2D fundoErradoSamuca = LoadTexture("assets/finalSamuca.jpg");
 
     // Escolha do jogador
     while (acertou == -1 && !WindowShouldClose()) {
@@ -43,7 +47,7 @@ void telaFinalAdivinhacao() {
 
         for (int i = 0; i < 4; i++) {
             bool hover = CheckCollisionPointRec(mouse, botoes[i]);
-            Color corBotao = hover ? (Color){255, 105, 180, 255} : (Color){255, 182, 193, 255}; // Hot pink e rosa claro
+            Color corBotao = hover ? (Color){255, 105, 180, 255} : (Color){255, 182, 193, 255};
 
             DrawRectangleRounded(botoes[i], 0.5f, 12, corBotao);
             int textWidth = MeasureText(personagens[i], 30);
@@ -55,28 +59,35 @@ void telaFinalAdivinhacao() {
         if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
             for (int i = 0; i < 4; i++) {
                 if (CheckCollisionPointRec(mouse, botoes[i])) {
+                    escolha = i;
                     acertou = (strcmp(personagens[i], crushReal) == 0) ? 1 : 0;
                 }
             }
         }
     }
 
-    // Se acertou, prepara música de vitória
     Music finalMusic = {0};
     if (acertou == 1) {
         finalMusic = LoadMusicStream("assets/finalcerto.mp3");
-        SeekMusicStream(finalMusic, 67.0f); // Avança para 1:07
+        SeekMusicStream(finalMusic, 67.0f);
         PlayMusicStream(finalMusic);
     }
 
-    // Tela de resultado
+    // Tela final
     while (!WindowShouldClose()) {
         if (acertou == 1) UpdateMusicStream(finalMusic);
 
         BeginDrawing();
         ClearBackground(RAYWHITE);
 
-        Texture2D fundoAtual = (acertou == 1) ? fundoFinal : fundoInicial;
+        Texture2D fundoAtual = fundoInicial;
+        if (acertou == 1) {
+            fundoAtual = fundoFinal;
+        } else {
+            if (strcmp(personagens[escolha], "Bruno") == 0) fundoAtual = fundoErradoBruno;
+            else if (strcmp(personagens[escolha], "Felipe") == 0) fundoAtual = fundoErradoFelipe;
+            else if (strcmp(personagens[escolha], "Samuca") == 0) fundoAtual = fundoErradoSamuca;
+        }
 
         DrawTexturePro(
             fundoAtual,
@@ -87,10 +98,8 @@ void telaFinalAdivinhacao() {
             WHITE
         );
 
-        // Sobreposição rosa transparente se errar
         if (acertou == 0) {
-            DrawRectangle(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, (Color){255, 182, 193, 150});
-       
+            
             DrawText("Não foi dessa vez!", 600, 400, 30, RED);
         }
 
@@ -105,6 +114,10 @@ void telaFinalAdivinhacao() {
         UnloadMusicStream(finalMusic);
     }
 
+    // Libera recursos
     UnloadTexture(fundoInicial);
     UnloadTexture(fundoFinal);
+    UnloadTexture(fundoErradoBruno);
+    UnloadTexture(fundoErradoFelipe);
+    UnloadTexture(fundoErradoSamuca);
 }
